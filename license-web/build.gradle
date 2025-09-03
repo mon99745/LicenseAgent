@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+war {
+    enabled = false
+}
+
+dependencies {
+    implementation fileTree(dir: '../lib', includes: [
+            "JsonWebToken-*.jar"
+    ])
+}

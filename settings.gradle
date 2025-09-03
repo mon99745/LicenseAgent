@@ -1,0 +1,13 @@
+pluginManagement {
+    plugins {
+        id 'org.springframework.boot' version '3.5.5'
+    }
+}
+
+rootProject.name = 'licenseAgent'
+
+include 'license-common'
+include 'license-issuer'
+include 'license-validator'
+include 'license-web'
+include 'license-webadmin'

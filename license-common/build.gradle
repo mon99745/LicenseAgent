@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+war {
+    enabled = false
+}
+
+dependencies {
+}
