@@ -1,1 +1,4 @@
-spring.application.name=license-issuer
+### 서버 관리
+server:
+  ### 내장 WAS 관리
+  port: 8080
