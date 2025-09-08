@@ -3,13 +3,17 @@ package com.licenseissuer.model.entity;
 import com.licenseissuer.model.LicenseType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -24,6 +28,7 @@ public class LicenseInfo {
 	protected Long id;
 
 	@Comment("라이센스 종류")
+	@Enumerated(EnumType.STRING)
 	@Column(length = 4, nullable = false)
 	protected LicenseType type;
 
@@ -63,5 +68,19 @@ public class LicenseInfo {
 		this.expDate = expDate;
 		this.issuer = issuer;
 		this.issuerIp = issuerIp;
+	}
+
+	@PrePersist
+	public void prePersist() {
+		if (issDate == null) {
+			issDate = truncateMillis(new Date());
+		}
+	}
+
+	private Date truncateMillis(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTime();
 	}
 }
