@@ -8,6 +8,7 @@ war {
 }
 
 dependencies {
+    runtimeOnly 'com.h2database:h2'
     implementation fileTree(dir: '../lib', includes: [
             "JsonWebToken-*.jar"
     ])

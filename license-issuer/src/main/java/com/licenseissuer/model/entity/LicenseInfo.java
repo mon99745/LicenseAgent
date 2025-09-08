@@ -51,4 +51,17 @@ public class LicenseInfo {
 	@Column
 	@ColumnDefault("CURRENT_TIMESTAMP")
 	protected Date issDate;
+
+	public LicenseInfo() {
+	}
+
+	public LicenseInfo(LicenseType type, String projectName, String ipAddress,
+					   Date expDate, String issuer, String issuerIp) {
+		this.type = type;
+		this.projectName = projectName;
+		this.ipAddress = ipAddress;
+		this.expDate = expDate;
+		this.issuer = issuer;
+		this.issuerIp = issuerIp;
+	}
 }
