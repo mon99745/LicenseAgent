@@ -2,6 +2,7 @@ package com.licenseissuer.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.licenseissuer.config.LicenseIssueProperties;
+import com.licenseissuer.model.LicenseStatusType;
 import com.licenseissuer.model.LicenseType;
 import com.licenseissuer.model.dto.LicenseIssueRequest;
 import com.licenseissuer.model.dto.LicenseReadRequest;
@@ -212,6 +213,7 @@ public class LicenseIssueService {
 		// 01. 라이센스 발급 정보 저장
 		LicenseInfo licenseInfo = new LicenseInfo(
 				LicenseType.fromValue(issueRequest.getOperation()),
+				LicenseStatusType.ACTIVE,
 				issueRequest.getProjectName(),
 				issueRequest.getIpAddress(),
 				expDate,

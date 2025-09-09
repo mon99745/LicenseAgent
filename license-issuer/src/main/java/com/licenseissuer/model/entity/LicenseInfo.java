@@ -1,5 +1,6 @@
 package com.licenseissuer.model.entity;
 
+import com.licenseissuer.model.LicenseStatusType;
 import com.licenseissuer.model.LicenseType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
@@ -32,6 +34,11 @@ public class LicenseInfo {
 	@Column(length = 4, nullable = false)
 	protected LicenseType type;
 
+	@Comment("라이센스 상태")
+	@Enumerated(EnumType.STRING)
+	@Column(length = 4, nullable = false)
+	protected LicenseStatusType status;
+
 	@Comment("프로젝트명")
 	@Column(length = 100, nullable = false)
 	protected String projectName;
@@ -53,16 +60,22 @@ public class LicenseInfo {
 	protected String issuerIp;
 
 	@Comment("발급일시")
-	@Column
+	@Column(nullable = false, updatable = false)
 	@ColumnDefault("CURRENT_TIMESTAMP")
 	protected Date issDate;
+
+	@Comment("수정일시")
+	@Column(nullable = false)
+	@ColumnDefault("CURRENT_TIMESTAMP")
+	protected Date modDate;
 
 	public LicenseInfo() {
 	}
 
-	public LicenseInfo(LicenseType type, String projectName, String ipAddress,
+	public LicenseInfo(LicenseType type, LicenseStatusType status, String projectName, String ipAddress,
 					   Date expDate, String issuer, String issuerIp) {
 		this.type = type;
+		this.status = status;
 		this.projectName = projectName;
 		this.ipAddress = ipAddress;
 		this.expDate = expDate;
@@ -75,6 +88,14 @@ public class LicenseInfo {
 		if (issDate == null) {
 			issDate = truncateMillis(new Date());
 		}
+		if (modDate == null) {
+			modDate = truncateMillis(new Date());
+		}
+	}
+
+	@PreUpdate
+	public void preUpdate() {
+		modDate = truncateMillis(new Date());
 	}
 
 	private Date truncateMillis(Date date) {
