@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.licenseissuer.config.LicenseIssueProperties;
 import com.licenseissuer.model.LicenseType;
 import com.licenseissuer.model.dto.LicenseIssueRequest;
+import com.licenseissuer.model.dto.LicenseReadRequest;
+import com.licenseissuer.model.dto.LicenseReadResponse;
 import com.licenseissuer.model.dto.ProdLicenseDto;
 import com.licenseissuer.model.dto.DevLicenseDto;
 import com.licenseissuer.model.dto.TempLicenseDto;
@@ -15,6 +17,7 @@ import com.security.jsonwebtoken.message.CreateTokenResponse;
 import com.security.jsonwebtoken.service.TokenSerivce;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 
@@ -90,12 +94,30 @@ public class LicenseIssueService {
 	/**
 	 * 라이센스 발급 이력 조회
 	 *
-	 * @param issueRequest
+	 * @param readRequest
 	 * @return
 	 */
-	public void getIssueHistory(LicenseIssueRequest issueRequest) {
+	@Transactional
+	public LicenseReadResponse getIssueHistory(LicenseReadRequest readRequest) {
 		// 01. 라이센스 발급 이력 조회
-		// 02. 라이센스 조회 이력 저장
+		List<LicenseInfo> licenseInfoList = licenseInfoRepository.findByProjectNameAndIssuer(
+						readRequest.getProjectName(),
+						readRequest.getIssuer()
+				);
+
+		if (licenseInfoList.isEmpty()) {
+			return LicenseReadResponse.builder()
+					.resultCode(HttpStatus.OK.value())
+					.resultMsg(HttpStatus.NOT_FOUND.getReasonPhrase())
+					.build();
+		}
+
+		// 03. 라이센스 발급 이력 반환
+		return LicenseReadResponse.builder()
+				.resultCode(HttpStatus.OK.value())
+				.resultMsg(HttpStatus.OK.getReasonPhrase())
+				.licenses(licenseInfoList)
+				.build();
 	}
 
 	/**

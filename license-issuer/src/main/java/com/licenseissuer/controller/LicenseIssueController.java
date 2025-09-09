@@ -1,6 +1,7 @@
 package com.licenseissuer.controller;
 
 import com.licenseissuer.model.dto.LicenseIssueRequest;
+import com.licenseissuer.model.dto.LicenseReadRequest;
 import com.licenseissuer.model.dto.LicenseReadResponse;
 import com.licenseissuer.service.LicenseIssueService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,7 +31,7 @@ public class LicenseIssueController {
 	@PostMapping("download")
 	public ResponseEntity<Resource> getLicense(HttpServletRequest httpRequest,
 											   @RequestBody LicenseIssueRequest issueRequest) {
-		// 01. issueRequest 유효 검증
+		// 01. issueRequest 유효성 검증
 		issueRequest.validate();
 
 		// 02. IP 추출 및 요청 정보 바인딩
@@ -41,17 +42,17 @@ public class LicenseIssueController {
 	}
 
 	/**
-	 * 라이센스 발급 이력
+	 * 라이센스 발급 이력 조회
 	 *
-	 * @param httpRequest
-	 * @param issueRequest
+	 * @param readRequest
 	 * @return
 	 */
 	@PostMapping("history")
-	public LicenseReadResponse getIssueHistory(HttpServletRequest httpRequest,
-											   @RequestBody LicenseIssueRequest issueRequest) {
-		// 01. 로그(info) - IP 추출 및 요청 정보 바인딩
+	public LicenseReadResponse getIssueHistory(@RequestBody LicenseReadRequest readRequest) {
+		// 01. issueRequest 유효성 검증
+		readRequest.validate();
+
 		// 02. 서비스 레이어로 전달 및 반환
-		return LicenseReadResponse.builder().build();
+		return issueService.getIssueHistory(readRequest);
 	}
 }

@@ -1,16 +1,15 @@
 package com.licenseissuer.model.dto;
 
+import com.licenseissuer.model.entity.LicenseInfo;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Builder
 public class LicenseReadResponse {
-	protected String type;
-	protected String projectName;
-	protected String ipAddress;
-	protected String expDate;
-	protected String issuer;
-	protected String issuerIp;
-	protected String issueDate;
+	protected int resultCode;
+	protected String resultMsg;
+	private List<LicenseInfo> licenses;
 }
