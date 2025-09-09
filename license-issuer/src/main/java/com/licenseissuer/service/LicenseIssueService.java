@@ -2,12 +2,12 @@ package com.licenseissuer.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.licenseissuer.config.LicenseIssueProperties;
-import com.licenseissuer.model.LicenseProcessType;
-import com.licenseissuer.model.LicenseStatusType;
-import com.licenseissuer.model.LicenseType;
-import com.licenseissuer.model.dto.LicenseIssueRequest;
-import com.licenseissuer.model.dto.LicenseReadRequest;
-import com.licenseissuer.model.dto.LicenseUpdateRequest;
+import com.licenseissuer.model.enums.LicenseProcessType;
+import com.licenseissuer.model.enums.LicenseStatusType;
+import com.licenseissuer.model.enums.LicenseType;
+import com.licenseissuer.model.dto.request.LicenseIssueRequest;
+import com.licenseissuer.model.dto.request.LicenseReadRequest;
+import com.licenseissuer.model.dto.request.LicenseUpdateRequest;
 import com.licenseissuer.model.dto.ProdLicenseDto;
 import com.licenseissuer.model.dto.DevLicenseDto;
 import com.licenseissuer.model.dto.TempLicenseDto;

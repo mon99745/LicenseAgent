@@ -1,4 +1,4 @@
-package com.licenseissuer.model.dto;
+package com.licenseissuer.model.dto.response;
 
 import com.licenseissuer.model.entity.LicenseInfo;
 import lombok.Builder;

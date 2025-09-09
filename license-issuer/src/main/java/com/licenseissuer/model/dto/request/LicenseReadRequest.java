@@ -1,4 +1,4 @@
-package com.licenseissuer.model.dto;
+package com.licenseissuer.model.dto.request;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

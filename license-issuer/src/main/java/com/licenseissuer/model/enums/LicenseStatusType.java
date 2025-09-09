@@ -1,4 +1,4 @@
-package com.licenseissuer.model;
+package com.licenseissuer.model.enums;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

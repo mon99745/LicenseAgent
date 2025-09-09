@@ -1,10 +1,10 @@
 package com.licenseissuer.controller;
 
-import com.licenseissuer.model.dto.LicenseIssueRequest;
-import com.licenseissuer.model.dto.LicenseReadRequest;
-import com.licenseissuer.model.dto.LicenseReadResponse;
-import com.licenseissuer.model.dto.LicenseUpdateRequest;
-import com.licenseissuer.model.dto.LicenseUpdateResponse;
+import com.licenseissuer.model.dto.request.LicenseIssueRequest;
+import com.licenseissuer.model.dto.request.LicenseReadRequest;
+import com.licenseissuer.model.dto.response.LicenseReadResponse;
+import com.licenseissuer.model.dto.request.LicenseUpdateRequest;
+import com.licenseissuer.model.dto.response.LicenseUpdateResponse;
 import com.licenseissuer.model.entity.LicenseInfo;
 import com.licenseissuer.service.LicenseIssueService;
 import jakarta.servlet.http.HttpServletRequest;
