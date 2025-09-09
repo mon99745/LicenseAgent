@@ -66,6 +66,17 @@ public class LicenseIssueControllerTest {
 			"  \"processorIp\": \"\"\n" +
 			"}";
 
+	private static String updateContent_prod = "{\n" +
+			"  \"operation\": \"PROD\",\n" +
+			"  \"projectName\": \"TestProject3\",\n" +
+			"  \"ipAddress\": \"192.168.0.100\",\n" +
+			"  \"expDate\": \"2025-12-31 23:59:59\",\n" +
+			"  \"issuer\": \"Tester3\",\n" +
+			"  \"issuerIp\": \"\",\n" +
+			"  \"processor\": \"\",\n" +
+			"  \"processorIp\": \"\"\n" +
+			"}";
+
 	@Test
 	void t01_운영_라이센스_다운로드() throws Exception {
 		MvcResult result = mvc.perform(post(PATH + "/download")
@@ -149,6 +160,24 @@ public class LicenseIssueControllerTest {
 		MvcResult result = mvc.perform(post(PATH + "/history")
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(readContent))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String response = result.getResponse().getContentAsString();
+
+		ObjectMapper mapper = new ObjectMapper();
+		Object json = mapper.readValue(response, Object.class);
+		String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+
+		log.info(prettyJson);
+	}
+
+	@Test
+	void t05_라이센스_발급이력_변경() throws Exception {
+		MvcResult result = mvc.perform(post(PATH + "/update")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(updateContent_prod))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andReturn();

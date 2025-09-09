@@ -2,23 +2,25 @@ package com.licenseissuer.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.licenseissuer.config.LicenseIssueProperties;
+import com.licenseissuer.model.LicenseProcessType;
 import com.licenseissuer.model.LicenseStatusType;
 import com.licenseissuer.model.LicenseType;
 import com.licenseissuer.model.dto.LicenseIssueRequest;
 import com.licenseissuer.model.dto.LicenseReadRequest;
-import com.licenseissuer.model.dto.LicenseReadResponse;
+import com.licenseissuer.model.dto.LicenseUpdateRequest;
 import com.licenseissuer.model.dto.ProdLicenseDto;
 import com.licenseissuer.model.dto.DevLicenseDto;
 import com.licenseissuer.model.dto.TempLicenseDto;
 import com.licenseissuer.model.entity.LicenseInfo;
+import com.licenseissuer.model.entity.LicenseInfoLog;
 import com.licenseissuer.repository.LicenseInfoLogRepository;
 import com.licenseissuer.repository.LicenseInfoRepository;
 import com.licenseissuer.util.DateUtil;
 import com.security.jsonwebtoken.message.CreateTokenResponse;
 import com.security.jsonwebtoken.service.TokenSerivce;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LicenseIssueService {
@@ -98,27 +101,24 @@ public class LicenseIssueService {
 	 * @param readRequest
 	 * @return
 	 */
-	@Transactional
-	public LicenseReadResponse getIssueHistory(LicenseReadRequest readRequest) {
-		// 01. 라이센스 발급 이력 조회
+	public List<LicenseInfo> getIssueHistory(LicenseReadRequest readRequest) {
+		// 01. 라이센스 리스트 조회
 		List<LicenseInfo> licenseInfoList = licenseInfoRepository.findByProjectNameAndIssuer(
-						readRequest.getProjectName(),
-						readRequest.getIssuer()
-				);
+				readRequest.getProjectName(),
+				readRequest.getIssuer());
 
-		if (licenseInfoList.isEmpty()) {
-			return LicenseReadResponse.builder()
-					.resultCode(HttpStatus.OK.value())
-					.resultMsg(HttpStatus.NOT_FOUND.getReasonPhrase())
-					.build();
-		}
+		log.info("조회된 라이센스 수: {}건", licenseInfoList.size());
+		licenseInfoList.forEach(license ->
+				log.debug("LicenseInfo: id={}, type={}, projectName={}, issuer={}, ip={}",
+						license.getId(),
+						license.getType(),
+						license.getProjectName(),
+						license.getIssuer(),
+						license.getIpAddress())
+		);
 
-		// 03. 라이센스 발급 이력 반환
-		return LicenseReadResponse.builder()
-				.resultCode(HttpStatus.OK.value())
-				.resultMsg(HttpStatus.OK.getReasonPhrase())
-				.licenses(licenseInfoList)
-				.build();
+		// 02. 라이센스 리스트 반환
+		return licenseInfoList;
 	}
 
 	/**
@@ -222,5 +222,76 @@ public class LicenseIssueService {
 		);
 
 		licenseInfoRepository.save(licenseInfo);
+
+		// 02. 라이센스 이력 정보 저장
+		saveLicenseInfoLog(licenseInfo, issueRequest.getIssuer(),
+				issueRequest.getIssuerIp(), LicenseProcessType.ISSUE.getValue());
+	}
+
+
+	/**
+	 * 라이센스 이력 정보 저장
+	 *
+	 * @param license     라이센스
+	 * @param processor   처리자
+	 * @param processorIp 처리자 IP
+	 * @param prcsContent 처리내용
+	 */
+	private void saveLicenseInfoLog(LicenseInfo license, String processor, String processorIp, String prcsContent) {
+		// 01. 라이센스 이력 정보 저장
+		LicenseInfoLog licenseAfterInfoLog = new LicenseInfoLog(license, processor, processorIp, prcsContent);
+		licenseInfoLogRepository.save(licenseAfterInfoLog);
+	}
+
+	/**
+	 * 라이센스 발급 정보 변경
+	 * - 1단계 기존 라이센스의 무효화 (Deactive)
+	 * - 2단계 업데이트 정보의 신규 라이센스를 반환
+	 *
+	 * @param updateRequest
+	 */
+	@Transactional
+	public void updateIssueHistory(LicenseUpdateRequest updateRequest) {
+		LicenseReadRequest readInfo = new LicenseReadRequest();
+		LicenseInfo licenseInfo;
+		Date updateExpDate = DateUtil.parse(updateRequest.getExpDate());
+
+		// 01. 업데이트 대상 라이센스 조회 및 유효성 검증
+		readInfo.setReadInfo(updateRequest.getProjectName(),
+				updateRequest.getIssuer());
+		List<LicenseInfo> licenseInfoList = getIssueHistory(readInfo);
+		if (licenseInfoList.size() != 1 || licenseInfoList.isEmpty()) {
+			throw new RuntimeException("Failed to query license for update: " + updateRequest);
+		} else {
+			licenseInfo = licenseInfoList.get(0);
+			log.info("before={}", licenseInfo);
+
+		}
+
+		// 02. 기존 라이센스의 무효화 (Deactive)
+		licenseInfo.deactivate();
+		licenseInfoRepository.save(licenseInfo);
+
+		// 03. 신규 라이센스를 저장
+		LicenseInfo updatelicenseInfo = new LicenseInfo(
+				LicenseType.fromValue(updateRequest.getOperation()),
+				LicenseStatusType.ACTIVE,
+				updateRequest.getProjectName(),
+				updateRequest.getIpAddress(),
+				updateExpDate,
+				updateRequest.getIssuer(),
+				licenseInfo.getIssuerIp()
+		);
+
+		log.debug("after={}", updatelicenseInfo);
+		licenseInfoRepository.save(updatelicenseInfo);
+
+		// 04-1. 라이센스 이력 정보 저장
+		saveLicenseInfoLog(licenseInfo, updateRequest.getProcessor(),
+				updateRequest.getProcessorIp(), LicenseStatusType.DEACTIVE.getValue());
+
+		// 04-2. 라이센스 이력 정보 저장
+		saveLicenseInfoLog(updatelicenseInfo, updateRequest.getProcessor(),
+				updateRequest.getProcessorIp(), LicenseProcessType.REISSUE.getValue());
 	}
 }

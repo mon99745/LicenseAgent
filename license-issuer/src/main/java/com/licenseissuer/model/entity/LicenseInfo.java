@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import lombok.Getter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 
@@ -21,6 +22,7 @@ import java.util.Date;
 /**
  * 라이센스 정보
  */
+@ToString
 @Getter
 @Entity
 public class LicenseInfo {
@@ -55,10 +57,12 @@ public class LicenseInfo {
 	@Column(length = 100, nullable = false)
 	protected String issuer;
 
+	@ToString.Exclude
 	@Comment("발급자 IP")
 	@Column(length = 100, nullable = false)
 	protected String issuerIp;
 
+	@ToString.Exclude
 	@Comment("발급일시")
 	@Column(nullable = false, updatable = false)
 	@ColumnDefault("CURRENT_TIMESTAMP")
@@ -103,5 +107,15 @@ public class LicenseInfo {
 		cal.setTime(date);
 		cal.set(Calendar.MILLISECOND, 0);
 		return cal.getTime();
+	}
+
+	/** 기존 라이센스를 무효화 처리 */
+	public void deactivate() {
+		this.status = LicenseStatusType.DEACTIVE;
+	}
+
+	/** 라이센스 활성화 처리 (필요 시) */
+	public void activate() {
+		this.status = LicenseStatusType.ACTIVE;
 	}
 }
