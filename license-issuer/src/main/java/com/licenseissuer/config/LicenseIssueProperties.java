@@ -1,5 +1,6 @@
 package com.licenseissuer.config;
 
+import com.licensecommon.config.LicenseProperties;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,8 @@ import static com.licenseissuer.config.LicenseIssueProperties.PROPERTY_PREFIX;
 @Component
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ConfigurationProperties(prefix = PROPERTY_PREFIX)
-public class LicenseIssueProperties {
-	public static final String PROPERTY_PREFIX = "lic";
+public class LicenseIssueProperties
+		extends LicenseProperties {
 
 	protected String licenseName = "demo";
 	protected String licensePrefix = "";
