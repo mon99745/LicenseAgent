@@ -1,0 +1,7 @@
+common:
+  api-doc:
+    title: "License Agent API Documentation"
+    description: "라이센스 에이전트 API 문서"
+    version: "1.0"
+    email: ""
+    url: "http://localhost:8080"
