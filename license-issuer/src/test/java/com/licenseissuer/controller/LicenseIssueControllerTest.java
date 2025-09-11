@@ -30,7 +30,7 @@ public class LicenseIssueControllerTest {
 	private MockMvc mvc;
 
 	private static String issueContent_prod = "{\n" +
-			"  \"operation\": \"PROD\",\n" +
+			"  \"operation\": \"prod\",\n" +
 			"  \"projectName\": \"TestProject\",\n" +
 			"  \"ipAddress\": \"192.168.0.1\",\n" +
 			"  \"expDate\": \"2025-12-31 23:59:59\",\n" +
