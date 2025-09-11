@@ -3,14 +3,17 @@ package com.licenseissuer.model.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -21,6 +24,7 @@ import java.util.Date;
 public class LicenseInfoLog {
 	@Id
 	@Comment("트랜잭션 아이디")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long tid;
 
 	@Comment("라이센스 아이디")
@@ -42,8 +46,33 @@ public class LicenseInfoLog {
 	@ColumnDefault("CURRENT_TIMESTAMP")
 	protected Date prcsDate;
 
-	@Comment("실행쿼리")
-	@Lob
+	@Comment("처리내용")
 	@Column(nullable = false)
-	protected String queryText;
+	protected String prcsContent;
+
+
+	public LicenseInfoLog(LicenseInfo license, String processor,
+						  String processorIp, String prcsContent) {
+		this.license = license;
+		this.processor = processor;
+		this.processorIp = processorIp;
+		this.prcsContent = prcsContent;
+	}
+
+	public LicenseInfoLog() {
+	}
+
+	@PrePersist
+	public void prePersist() {
+		if (prcsDate == null) {
+			prcsDate = truncateMillis(new Date());
+		}
+	}
+
+	private Date truncateMillis(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTime();
+	}
 }

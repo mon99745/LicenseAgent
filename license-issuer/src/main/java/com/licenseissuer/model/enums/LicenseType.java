@@ -1,4 +1,4 @@
-package com.licenseissuer.model;
+package com.licenseissuer.model.enums;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,4 +26,13 @@ public enum LicenseType {
 	TEMPLICENSE("temp");
 
 	private final String value;
+
+	public static LicenseType fromValue(String value) {
+		for (LicenseType type : values()) {
+			if (type.value.equalsIgnoreCase(value)) {
+				return type;
+			}
+		}
+		throw new IllegalArgumentException("Invalid license type: " + value);
+	}
 }

@@ -1,4 +1,3 @@
-HELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -35,3 +34,11 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### APP ###
+**/*-local.yml
+**/*-test.yml
+**/*.tmp
+**/*.lic
+**/*.db
+**/*.pem
