@@ -185,16 +185,22 @@ public class LicenseIssueService {
 		}
 
 		try {
-			File dir = new File(licenseProperties.getSavePath());
-			if (!dir.exists() && !dir.mkdirs()) {
-				throw new LicenseIssuerException(LicenseIssuerError.FAIL_CREATE_DIRECTORY, "licenseProperties.getSavePath()");
-			}
-
+			// 01. 파일 이름 생성
 			String fileName = licenseProperties.getLicensePrefix()
 					+ "." + licenseProperties.getLicenseSuffix();
-			File destination = new File(dir, fileName);
 
-			// Resource → 파일 복사
+			// 02. 디렉터리 유무에 따라 생성
+			File destination = new File(licenseProperties.getSavePath(), fileName);
+			File parentDir = destination.toPath().getParent().toFile();
+			if (!parentDir.exists()) {
+				if (!parentDir.mkdirs()) {
+					throw new LicenseIssuerException(LicenseIssuerError.FAIL_CREATE_DIRECTORY, parentDir.getPath());
+				}
+			} else if (!parentDir.isDirectory()) {
+				throw new LicenseIssuerException(LicenseIssuerError.FAIL_CREATE_DIRECTORY,
+						parentDir.getPath() + "Exists but is not a directory");
+			}
+			// 03. Resource → 파일 복사
 			try (InputStream in = resource.getInputStream()) {
 				Files.copy(in, destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			}

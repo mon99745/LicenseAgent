@@ -5,6 +5,7 @@ server:
 
 ### Spring 관리
 spring:
+  config.name: issuer
   datasource:
 ### h2 DB(default)
     driver-class-name: org.h2.Driver
@@ -37,5 +38,5 @@ springdoc:
 license:
   licenseName: "demo"
   licensePrefix: ""
-  licenseSuffix: "lic"
-  save-path: "./license/"
+  licenseSuffix: ".lic"
+  save-path: "./lic/"

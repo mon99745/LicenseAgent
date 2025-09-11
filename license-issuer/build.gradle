@@ -13,4 +13,5 @@ dependencies {
             "JsonWebToken-*.jar"
     ])
     implementation project(':license-common')
+    implementation group: 'org.json', name: 'json', version: '20230227'
 }
