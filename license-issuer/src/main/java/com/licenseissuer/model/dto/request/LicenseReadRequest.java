@@ -1,5 +1,7 @@
 package com.licenseissuer.model.dto.request;
 
+import com.licenseissuer.exception.LicenseIssuerError;
+import com.licenseissuer.exception.LicenseIssuerException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,24 +30,9 @@ public class LicenseReadRequest {
 		this.issuer = issuer;
 	}
 
-	/**
-	 * 필드 중 하나라도 값이 있는지 확인
-	 * @return true: 하나 이상 값 존재, false: 모두 null 또는 빈 문자열
-	 */
-	public boolean hasAnyValue() {
-		return (operation != null && !operation.isEmpty())
-				|| (projectName != null && !projectName.isEmpty())
-				|| (ipAddress != null && !ipAddress.isEmpty())
-				|| (expDate != null && !expDate.isEmpty())
-				|| (issuer != null && !issuer.isEmpty());
-	}
-
-	/**
-	 * validate 메서드 예시: 값이 하나도 없으면 예외
-	 */
 	public void validate() {
-		if (!hasAnyValue()) {
-			throw new IllegalArgumentException("At least one field value is required");
+		if (issuer == null || issuer.isBlank()) {
+			throw new LicenseIssuerException(LicenseIssuerError.EMPTY_READ_VALUE_ISSUER);
 		}
 	}
 }

@@ -9,6 +9,16 @@
 1. [v1.0.0](#-v1.0.0)
 
 
-## v1.0.0 (2024-04-24 ~)
+## v1.0.0 (2025-09-05 ~)
 - 최초 생성 버전
-    1. (개선/하) SAMPLE
+  1. (신규) [License-issuer] 라이센스 생성 구현 - 완료
+  1. (신규) [License-issuer] 라이센스 다운로드 기능 구현 - 완료
+  1. (신규) [License-issuer] 라이센스 발급 이력 조회 구현 - 완료
+  1. (신규) [License-common] SpringDoc 적용 (CommonReference 소스 이관) - 완료
+  1. (신규) [License-common] 공통 예외 처리 적용 (CommonReference 소스 이관) - 완료
+  1. (신규) [License-issuer] 모듈 종속 예외 처리 구현 - 완료
+  1. (신규) [License-issuer] 모듈 종속 예외 처리 적용 - 진행중
+  1. (버그/중) [License-issuer] 라이센스 중복 발급 이슈 - 보류
+  1. (신규) [License] Readme.md/ReleaseNote.md 작성 - 진행중
+  1. 
+    

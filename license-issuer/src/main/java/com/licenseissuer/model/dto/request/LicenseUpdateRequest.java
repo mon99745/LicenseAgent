@@ -1,5 +1,7 @@
 package com.licenseissuer.model.dto.request;
 
+import com.licenseissuer.exception.LicenseIssuerError;
+import com.licenseissuer.exception.LicenseIssuerException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,16 +27,16 @@ public class LicenseUpdateRequest {
 
 	public void validate() {
 		if (operation == null || operation.isBlank()) {
-			throw new IllegalArgumentException("Operation is required");
+			throw new LicenseIssuerException(LicenseIssuerError.EMPTY_UPDATE_VALUE_OPERATION);
 		}
 		if (projectName == null || projectName.isBlank()) {
-			throw new IllegalArgumentException("Project name is required");
+			throw new LicenseIssuerException(LicenseIssuerError.EMPTY_UPDATE_VALUE_PROJECTNAME);
 		}
 		if (issuer == null || issuer.isBlank()) {
-			throw new IllegalArgumentException("Issuer is required");
+			throw new LicenseIssuerException(LicenseIssuerError.EMPTY_UPDATE_VALUE_ISSUER);
 		}
 		if ((ipAddress == null || ipAddress.isBlank()) & (expDate == null || expDate.isBlank())) {
-			throw new IllegalArgumentException("IP address and Expire Date is required");
+			throw new LicenseIssuerException(LicenseIssuerError.EMPTY_UPDATE_VALUE);
 		}
 	}
 }

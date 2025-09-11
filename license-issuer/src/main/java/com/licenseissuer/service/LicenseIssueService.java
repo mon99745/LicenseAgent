@@ -2,6 +2,8 @@ package com.licenseissuer.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.licenseissuer.config.LicenseIssueProperties;
+import com.licenseissuer.exception.LicenseIssuerError;
+import com.licenseissuer.exception.LicenseIssuerException;
 import com.licenseissuer.model.enums.LicenseProcessType;
 import com.licenseissuer.model.enums.LicenseStatusType;
 import com.licenseissuer.model.enums.LicenseType;
@@ -179,13 +181,13 @@ public class LicenseIssueService {
 	 */
 	public void saveLicenseFile(Resource resource) {
 		if (resource == null) {
-			throw new IllegalArgumentException("Resource is null");
+			throw new LicenseIssuerException(LicenseIssuerError.EMPTY_RESOURCE);
 		}
 
 		try {
 			File dir = new File(licenseProperties.getSavePath());
 			if (!dir.exists() && !dir.mkdirs()) {
-				throw new RuntimeException("Failed to create directory: " + licenseProperties.getSavePath());
+				throw new LicenseIssuerException(LicenseIssuerError.FAIL_CREATE_DIRECTORY, "licenseProperties.getSavePath()");
 			}
 
 			String fileName = licenseProperties.getLicensePrefix()
@@ -198,7 +200,7 @@ public class LicenseIssueService {
 			}
 
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to save license file", e);
+			throw new LicenseIssuerException(LicenseIssuerError.FAIL_SAVE_LICENSE, e);
 		}
 	}
 
@@ -261,7 +263,7 @@ public class LicenseIssueService {
 				updateRequest.getIssuer());
 		List<LicenseInfo> licenseInfoList = getIssueHistory(readInfo);
 		if (licenseInfoList.size() != 1 || licenseInfoList.isEmpty()) {
-			throw new RuntimeException("Failed to query license for update: " + updateRequest);
+			throw new LicenseIssuerException(LicenseIssuerError.FAIL_UPDATE_QUERY_LICENSE, updateRequest.getIssuer());
 		} else {
 			licenseInfo = licenseInfoList.get(0);
 			log.info("before={}", licenseInfo);
