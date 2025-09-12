@@ -92,13 +92,10 @@ public class LicenseIssueController {
 		// 01. issueRequest 유효성 검증
 		updateRequest.validate();
 
-		// 02. IP 추출 및 요청 정보 바인딩
-		updateRequest.setProcessorIp(httpRequest.getRemoteAddr());
-
-		// 03. 라이센스 정보 변경
+		// 02. 라이센스 정보 변경
 		issueService.updateIssueHistory(updateRequest);
 
-		// 04. 응답 메시지 반환
+		// 03. 응답 메시지 반환
 		return LicenseUpdateResponse.builder()
 				.resultCode(HttpStatus.OK.value())
 				.resultMsg(HttpStatus.OK.getReasonPhrase())
