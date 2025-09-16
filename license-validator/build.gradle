@@ -11,4 +11,5 @@ dependencies {
     implementation fileTree(dir: '../lib', includes: [
             "JsonWebToken-*.jar"
     ])
+    implementation project(':license-common')
 }
