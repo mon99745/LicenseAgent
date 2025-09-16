@@ -17,17 +17,29 @@ public enum LicenseIssuerError
 	EMPTY_ISSUE_VALUE_OPERATION(LicenseIssuerError.CODE_PREFIX + "01-01", "Operation is required", HttpStatus.BAD_REQUEST),
 	EMPTY_ISSUE_VALUE_PROJECTNAME(LicenseIssuerError.CODE_PREFIX + "01-02", "Project name is required", HttpStatus.BAD_REQUEST),
 	EMPTY_ISSUE_VALUE_ISSUER(LicenseIssuerError.CODE_PREFIX + "01-03", "Issuer is required", HttpStatus.BAD_REQUEST),
-	EMPTY_ISSUE_VALUE(LicenseIssuerError.CODE_PREFIX + "01-04", "IP address and Expire Date is required", HttpStatus.BAD_REQUEST),
+
+	EMPTY_UPDATE_VALUE_LICENSEID(LicenseIssuerError.CODE_PREFIX + "01-04", "License-ID is required", HttpStatus.BAD_REQUEST),
+
 
 	EMPTY_UPDATE_VALUE_OPERATION(LicenseIssuerError.CODE_PREFIX + "01-05", "Operation is required", HttpStatus.BAD_REQUEST),
 	EMPTY_UPDATE_VALUE_PROJECTNAME(LicenseIssuerError.CODE_PREFIX + "01-06", "Project name is required", HttpStatus.BAD_REQUEST),
 	EMPTY_UPDATE_VALUE_ISSUER(LicenseIssuerError.CODE_PREFIX + "01-07", "Issuer is required", HttpStatus.BAD_REQUEST),
-	EMPTY_UPDATE_VALUE(LicenseIssuerError.CODE_PREFIX + "01-08", "IP address and Expire Date is required", HttpStatus.BAD_REQUEST),
 
 	EMPTY_READ_VALUE_ISSUER(LicenseIssuerError.CODE_PREFIX + "01-09", "Issuer is required", HttpStatus.BAD_REQUEST),
 
+	INVALID_OPERATION(LicenseIssuerError.CODE_PREFIX + "01-10", "Unsupported license type", HttpStatus.BAD_REQUEST),
 
-	FAIL_UPDATE_QUERY_LICENSE(LicenseIssuerError.CODE_PREFIX + "01-99", "Failed to query license for update", HttpStatus.BAD_REQUEST),
+	EMPTY_ISSUE_VALUE_IPADDRESS(LicenseIssuerError.CODE_PREFIX + "01-11", "Production license requires an IP address.", HttpStatus.BAD_REQUEST),
+	NOT_ALLOWED_EXPDATE_FOR_PROD(LicenseIssuerError.CODE_PREFIX + "01-12", "Production license does not allow an expiration date.", HttpStatus.BAD_REQUEST),
+	EMPTY_ISSUE_VALUE_EXPDATE(LicenseIssuerError.CODE_PREFIX + "01-13", "Development or temporary license requires an expiration date.", HttpStatus.BAD_REQUEST),
+	NOT_ALLOWED_IP_FOR_DEV_TEMP(LicenseIssuerError.CODE_PREFIX + "01-14", "Development or temporary license must not contain an IP address.", HttpStatus.BAD_REQUEST),
+
+	EMPTY_READ_VALUE_LICENSEID(LicenseIssuerError.CODE_PREFIX + "01-15", "Production license requires an IP address.", HttpStatus.BAD_REQUEST),
+
+
+
+	LICENSE_NOT_FOUND(LicenseIssuerError.CODE_PREFIX + "01-99", "License not found", HttpStatus.BAD_REQUEST),
+
 
 
 

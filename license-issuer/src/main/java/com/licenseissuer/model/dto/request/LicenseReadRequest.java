@@ -19,17 +19,6 @@ public class LicenseReadRequest {
 	protected String processor;
 	protected String processorIp;
 
-
-	public void setProcessorIp(String processorIp) {
-		this.processorIp = processorIp;
-	}
-
-	/** 검색 조건 */
-	public void setReadInfo(String projectName, String issuer) {
-		this.projectName = projectName;
-		this.issuer = issuer;
-	}
-
 	public void validate() {
 		if (issuer == null || issuer.isBlank()) {
 			throw new LicenseIssuerException(LicenseIssuerError.EMPTY_READ_VALUE_ISSUER);

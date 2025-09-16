@@ -1,5 +1,7 @@
 package com.licenseissuer.model.enums;
 
+import com.licenseissuer.exception.LicenseIssuerError;
+import com.licenseissuer.exception.LicenseIssuerException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,6 +35,6 @@ public enum LicenseType {
 				return type;
 			}
 		}
-		throw new IllegalArgumentException("Invalid license type: " + value);
+		throw new LicenseIssuerException(LicenseIssuerError.INVALID_OPERATION + ":" + value);
 	}
 }

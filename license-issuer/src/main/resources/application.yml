@@ -5,6 +5,7 @@ server:
 
 ### Spring 관리
 spring:
+  config.name: issuer
   datasource:
 ### h2 DB(default)
     driver-class-name: org.h2.Driver
@@ -12,13 +13,11 @@ spring:
     url: jdbc:h2:file:./db/h2/h2db;AUTO_SERVER=true
 ###    단일 프로세스 접근 (In-Memory Mode)
 #    url: jdbc:h2:mem:testdb
-
 ### MariaDB
 #    driver-class-name: org.mariadb.jdbc.Driver
 #    url: jdbc:mariadb://localhost:3307/demo?rewriteBatchedStatements=true
     username: sa
     password:
-
   h2:
 #    console:
 #      enabled: true
@@ -31,8 +30,25 @@ spring:
     hibernate.ddl-auto: update
     show-sql: true
 
+### Spring 문서 관리
+common:
+  api-doc:
+    title: "License Agent API"
+    description: "라이센스 에이전트 API"
+    version: "1.0"
+    email: "demo@exmple.com"
+    url: "https://www.example.com"
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /api
+    enabled: true
+  # 일반화된 응답 사용 여부 결정(Handler 충돌방지)
+  override-with-generic-response: false
+
 license:
   licenseName: "demo"
   licensePrefix: ""
-  licenseSuffix: "lic"
-  save-path: "./license/"
+  licenseSuffix: ".lic"
+  save-path: "./lic/"

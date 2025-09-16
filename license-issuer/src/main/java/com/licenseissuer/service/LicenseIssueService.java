@@ -18,8 +18,8 @@ import com.licenseissuer.model.entity.LicenseInfoLog;
 import com.licenseissuer.repository.LicenseInfoLogRepository;
 import com.licenseissuer.repository.LicenseInfoRepository;
 import com.licenseissuer.util.DateUtil;
-import com.security.jsonwebtoken.message.CreateTokenResponse;
-import com.security.jsonwebtoken.service.TokenSerivce;
+import com.security.jsonwebtoken.model.dto.reponse.CreateTokenResponse;
+import com.security.jsonwebtoken.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -43,7 +43,7 @@ import java.util.Map;
 public class LicenseIssueService {
 	protected final LicenseIssueProperties licenseProperties;
 	protected final FileGenerateService fileService;
-	protected final TokenSerivce tokenSerivce;
+	protected final TokenService tokenService;
 	private final LicenseInfoRepository licenseInfoRepository;
 	private final LicenseInfoLogRepository licenseInfoLogRepository;
 
@@ -105,10 +105,7 @@ public class LicenseIssueService {
 	 */
 	public List<LicenseInfo> getIssueHistory(LicenseReadRequest readRequest) {
 		// 01. 라이센스 리스트 조회
-		List<LicenseInfo> licenseInfoList = licenseInfoRepository.findByProjectNameAndIssuer(
-				readRequest.getProjectName(),
-				readRequest.getIssuer());
-
+		List<LicenseInfo> licenseInfoList = licenseInfoRepository.findByIssuer(readRequest.getIssuer());
 		log.info("조회된 라이센스 수: {}건", licenseInfoList.size());
 		licenseInfoList.forEach(license ->
 				log.debug("LicenseInfo: id={}, type={}, projectName={}, issuer={}, ip={}",
@@ -133,7 +130,7 @@ public class LicenseIssueService {
 
 		// 01. 토큰 생성
 		Map<String, String> temp = objectMapper.convertValue(prodLicenseDto, Map.class);
-		CreateTokenResponse tokenResponse = tokenSerivce.createJwt(temp);
+		CreateTokenResponse tokenResponse = tokenService.createJwt(temp);
 		String token = tokenResponse.getJwt();
 
 		// 02. 라이센스 생성 및 반환
@@ -150,7 +147,7 @@ public class LicenseIssueService {
 
 		// 01. 토큰 생성
 		Map<String, String> temp = objectMapper.convertValue(devLicenseDto, Map.class);
-		CreateTokenResponse tokenResponse = tokenSerivce.createJwt(temp);
+		CreateTokenResponse tokenResponse = tokenService.createJwt(temp);
 		String token = tokenResponse.getJwt();
 
 		// 02. 라이센스 생성 및 반환
@@ -167,7 +164,7 @@ public class LicenseIssueService {
 
 		// 01. 토큰 생성
 		Map<String, String> temp = objectMapper.convertValue(tempLicenseDto, Map.class);
-		CreateTokenResponse tokenResponse = tokenSerivce.createJwt(temp);
+		CreateTokenResponse tokenResponse = tokenService.createJwt(temp);
 		String token = tokenResponse.getJwt();
 
 		// 02. 라이센스 생성 및 반환
@@ -185,16 +182,22 @@ public class LicenseIssueService {
 		}
 
 		try {
-			File dir = new File(licenseProperties.getSavePath());
-			if (!dir.exists() && !dir.mkdirs()) {
-				throw new LicenseIssuerException(LicenseIssuerError.FAIL_CREATE_DIRECTORY, "licenseProperties.getSavePath()");
-			}
-
+			// 01. 파일 이름 생성
 			String fileName = licenseProperties.getLicensePrefix()
 					+ "." + licenseProperties.getLicenseSuffix();
-			File destination = new File(dir, fileName);
 
-			// Resource → 파일 복사
+			// 02. 디렉터리 유무에 따라 생성
+			File destination = new File(licenseProperties.getSavePath(), fileName);
+			File parentDir = destination.toPath().getParent().toFile();
+			if (!parentDir.exists()) {
+				if (!parentDir.mkdirs()) {
+					throw new LicenseIssuerException(LicenseIssuerError.FAIL_CREATE_DIRECTORY, parentDir.getPath());
+				}
+			} else if (!parentDir.isDirectory()) {
+				throw new LicenseIssuerException(LicenseIssuerError.FAIL_CREATE_DIRECTORY,
+						parentDir.getPath() + "Exists but is not a directory");
+			}
+			// 03. Resource → 파일 복사
 			try (InputStream in = resource.getInputStream()) {
 				Files.copy(in, destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			}
@@ -230,6 +233,47 @@ public class LicenseIssueService {
 				issueRequest.getIssuerIp(), LicenseProcessType.ISSUE.getValue());
 	}
 
+	/**
+	 * 라이센스 발급 정보 변경
+	 * - 1단계 기존 라이센스의 무효화 (Deactive)
+	 * - 2단계 업데이트 정보의 신규 라이센스를 반환
+	 *
+	 * @param updateRequest
+	 */
+	@Transactional
+	public void updateIssueHistory(LicenseUpdateRequest updateRequest) {
+		// 01. 업데이트 대상 라이센스 조회 및 유효성 검증
+		LicenseInfo licenseInfo = licenseInfoRepository.findById(updateRequest.getLicenseId())
+				.orElseThrow(() -> new LicenseIssuerException(LicenseIssuerError.LICENSE_NOT_FOUND));
+
+
+		// 02. 기존 라이센스의 무효화 (Deactive)
+		licenseInfo.deactivate();
+		log.debug("license={}", licenseInfo);
+		licenseInfoRepository.save(licenseInfo);
+
+		// 02-1. 라이센스 이력 정보 저장
+		saveLicenseInfoLog(licenseInfo, updateRequest.getProcessor(),
+				updateRequest.getProcessorIp(), LicenseStatusType.DEACTIVE.getValue());
+
+		// 03. 신규 라이센스를 저장
+		LicenseInfo updatelicenseInfo = new LicenseInfo(
+				LicenseType.fromValue(updateRequest.getOperation()),
+				LicenseStatusType.ACTIVE,
+				updateRequest.getProjectName(),
+				updateRequest.getIpAddress(),
+				DateUtil.parse(updateRequest.getExpDate()),
+				updateRequest.getIssuer(),
+				licenseInfo.getIssuerIp()
+		);
+
+		log.debug("update_license={}", updatelicenseInfo);
+		licenseInfoRepository.save(updatelicenseInfo);
+
+		// 03-1. 라이센스 이력 정보 저장
+		saveLicenseInfoLog(updatelicenseInfo, updateRequest.getProcessor(),
+				updateRequest.getProcessorIp(), LicenseProcessType.REISSUE.getValue());
+	}
 
 	/**
 	 * 라이센스 이력 정보 저장
@@ -243,57 +287,5 @@ public class LicenseIssueService {
 		// 01. 라이센스 이력 정보 저장
 		LicenseInfoLog licenseAfterInfoLog = new LicenseInfoLog(license, processor, processorIp, prcsContent);
 		licenseInfoLogRepository.save(licenseAfterInfoLog);
-	}
-
-	/**
-	 * 라이센스 발급 정보 변경
-	 * - 1단계 기존 라이센스의 무효화 (Deactive)
-	 * - 2단계 업데이트 정보의 신규 라이센스를 반환
-	 *
-	 * @param updateRequest
-	 */
-	@Transactional
-	public void updateIssueHistory(LicenseUpdateRequest updateRequest) {
-		LicenseReadRequest readInfo = new LicenseReadRequest();
-		LicenseInfo licenseInfo;
-		Date updateExpDate = DateUtil.parse(updateRequest.getExpDate());
-
-		// 01. 업데이트 대상 라이센스 조회 및 유효성 검증
-		readInfo.setReadInfo(updateRequest.getProjectName(),
-				updateRequest.getIssuer());
-		List<LicenseInfo> licenseInfoList = getIssueHistory(readInfo);
-		if (licenseInfoList.size() != 1 || licenseInfoList.isEmpty()) {
-			throw new LicenseIssuerException(LicenseIssuerError.FAIL_UPDATE_QUERY_LICENSE, updateRequest.getIssuer());
-		} else {
-			licenseInfo = licenseInfoList.get(0);
-			log.info("before={}", licenseInfo);
-
-		}
-
-		// 02. 기존 라이센스의 무효화 (Deactive)
-		licenseInfo.deactivate();
-		licenseInfoRepository.save(licenseInfo);
-
-		// 03. 신규 라이센스를 저장
-		LicenseInfo updatelicenseInfo = new LicenseInfo(
-				LicenseType.fromValue(updateRequest.getOperation()),
-				LicenseStatusType.ACTIVE,
-				updateRequest.getProjectName(),
-				updateRequest.getIpAddress(),
-				updateExpDate,
-				updateRequest.getIssuer(),
-				licenseInfo.getIssuerIp()
-		);
-
-		log.debug("after={}", updatelicenseInfo);
-		licenseInfoRepository.save(updatelicenseInfo);
-
-		// 04-1. 라이센스 이력 정보 저장
-		saveLicenseInfoLog(licenseInfo, updateRequest.getProcessor(),
-				updateRequest.getProcessorIp(), LicenseStatusType.DEACTIVE.getValue());
-
-		// 04-2. 라이센스 이력 정보 저장
-		saveLicenseInfoLog(updatelicenseInfo, updateRequest.getProcessor(),
-				updateRequest.getProcessorIp(), LicenseProcessType.REISSUE.getValue());
 	}
 }

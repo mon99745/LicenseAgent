@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface LicenseInfoRepository extends JpaRepository<LicenseInfo, Long> {
-	List<LicenseInfo> findByProjectNameAndIssuer(String projectName, String issuer);
+	List<LicenseInfo> findByIssuer(String issuer);
 }
