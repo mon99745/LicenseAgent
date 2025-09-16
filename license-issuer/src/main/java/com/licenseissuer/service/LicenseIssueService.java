@@ -18,8 +18,8 @@ import com.licenseissuer.model.entity.LicenseInfoLog;
 import com.licenseissuer.repository.LicenseInfoLogRepository;
 import com.licenseissuer.repository.LicenseInfoRepository;
 import com.licenseissuer.util.DateUtil;
-import com.security.jsonwebtoken.message.CreateTokenResponse;
-import com.security.jsonwebtoken.service.TokenSerivce;
+import com.security.jsonwebtoken.model.dto.reponse.CreateTokenResponse;
+import com.security.jsonwebtoken.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -43,7 +43,7 @@ import java.util.Map;
 public class LicenseIssueService {
 	protected final LicenseIssueProperties licenseProperties;
 	protected final FileGenerateService fileService;
-	protected final TokenSerivce tokenSerivce;
+	protected final TokenService tokenService;
 	private final LicenseInfoRepository licenseInfoRepository;
 	private final LicenseInfoLogRepository licenseInfoLogRepository;
 
@@ -130,7 +130,7 @@ public class LicenseIssueService {
 
 		// 01. 토큰 생성
 		Map<String, String> temp = objectMapper.convertValue(prodLicenseDto, Map.class);
-		CreateTokenResponse tokenResponse = tokenSerivce.createJwt(temp);
+		CreateTokenResponse tokenResponse = tokenService.createJwt(temp);
 		String token = tokenResponse.getJwt();
 
 		// 02. 라이센스 생성 및 반환
@@ -147,7 +147,7 @@ public class LicenseIssueService {
 
 		// 01. 토큰 생성
 		Map<String, String> temp = objectMapper.convertValue(devLicenseDto, Map.class);
-		CreateTokenResponse tokenResponse = tokenSerivce.createJwt(temp);
+		CreateTokenResponse tokenResponse = tokenService.createJwt(temp);
 		String token = tokenResponse.getJwt();
 
 		// 02. 라이센스 생성 및 반환
@@ -164,7 +164,7 @@ public class LicenseIssueService {
 
 		// 01. 토큰 생성
 		Map<String, String> temp = objectMapper.convertValue(tempLicenseDto, Map.class);
-		CreateTokenResponse tokenResponse = tokenSerivce.createJwt(temp);
+		CreateTokenResponse tokenResponse = tokenService.createJwt(temp);
 		String token = tokenResponse.getJwt();
 
 		// 02. 라이센스 생성 및 반환
