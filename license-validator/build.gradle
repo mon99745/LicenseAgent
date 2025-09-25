@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'war'
 }
 
-war {
-    enabled = false
+jar {
+    enabled = true
+    archiveClassifier = ''
 }
 
 dependencies {
