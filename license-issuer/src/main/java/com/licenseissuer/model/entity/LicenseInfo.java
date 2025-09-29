@@ -1,7 +1,7 @@
 package com.licenseissuer.model.entity;
 
-import com.licenseissuer.model.enums.LicenseStatusType;
-import com.licenseissuer.model.enums.LicenseType;
+import com.licensecommon.enums.LicenseStatusType;
+import com.licensecommon.enums.LicenseType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
