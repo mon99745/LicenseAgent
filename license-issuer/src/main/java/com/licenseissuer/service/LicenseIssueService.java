@@ -1,6 +1,8 @@
 package com.licenseissuer.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsonwebtoken.core.model.dto.reponse.CreateTokenResponse;
+import com.jsonwebtoken.core.service.TokenService;
 import com.licenseissuer.config.LicenseIssueProperties;
 import com.licenseissuer.exception.LicenseIssuerError;
 import com.licenseissuer.exception.LicenseIssuerException;
@@ -18,8 +20,6 @@ import com.licenseissuer.model.entity.LicenseInfoLog;
 import com.licenseissuer.repository.LicenseInfoLogRepository;
 import com.licenseissuer.repository.LicenseInfoRepository;
 import com.licenseissuer.util.DateUtil;
-import com.security.jsonwebtoken.model.dto.reponse.CreateTokenResponse;
-import com.security.jsonwebtoken.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;

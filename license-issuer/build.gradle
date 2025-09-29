@@ -12,7 +12,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     implementation fileTree(dir: '../lib', includes: [
-            "JsonWebToken-*.jar"
+            "jsonwebtoken-*.jar"
     ])
     implementation project(':license-common')
 }

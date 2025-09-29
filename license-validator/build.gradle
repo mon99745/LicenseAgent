@@ -9,7 +9,7 @@ jar {
 
 dependencies {
     implementation fileTree(dir: '../lib', includes: [
-            "JsonWebToken-*.jar"
+            "jsonwebtoken-*.jar"
     ])
     implementation project(':license-common')
 }
