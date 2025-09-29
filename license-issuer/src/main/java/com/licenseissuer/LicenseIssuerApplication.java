@@ -1,8 +1,8 @@
 package com.licenseissuer;
 
+import com.jsonwebtoken.core.config.TokenAutoConfig;
 import com.licensecommon.config.SpringDocConfig;
 import com.licenseissuer.model.entity.LicenseInfo;
-import com.security.jsonwebtoken.config.TokenAutoConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

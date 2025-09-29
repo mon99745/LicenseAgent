@@ -1,9 +1,9 @@
 package com.licensevalidator.service;
 
+import com.jsonwebtoken.core.model.dto.reponse.VerifyTokenResponse;
+import com.jsonwebtoken.core.service.TokenService;
 import com.licensevalidator.model.response.LicenseVerifyResponse;
 import com.licensevalidator.util.FileUtil;
-import com.security.jsonwebtoken.model.dto.reponse.VerifyTokenResponse;
-import com.security.jsonwebtoken.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
