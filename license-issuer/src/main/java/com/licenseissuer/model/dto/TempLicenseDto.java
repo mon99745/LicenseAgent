@@ -1,6 +1,6 @@
 package com.licenseissuer.model.dto;
 
-import com.licenseissuer.model.enums.LicenseType;
+import com.licensecommon.enums.LicenseType;
 import lombok.Builder;
 import lombok.Data;
 

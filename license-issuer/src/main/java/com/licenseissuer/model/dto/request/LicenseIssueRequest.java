@@ -2,7 +2,7 @@ package com.licenseissuer.model.dto.request;
 
 import com.licenseissuer.exception.LicenseIssuerError;
 import com.licenseissuer.exception.LicenseIssuerException;
-import com.licenseissuer.model.enums.LicenseType;
+import com.licensecommon.enums.LicenseType;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,16 +48,13 @@ public class LicenseIssueRequest {
 				}
 				break;
 
-			case DEVLICENSE:
-			case TEMPLICENSE:
+			case DEVLICENSE, TEMPLICENSE:
 				// DEV, TEMP → expDate 필수, ipAddress 들어오면 예외
 				if (expDate == null || expDate.isBlank()) {
-					throw new LicenseIssuerException(
-							LicenseIssuerError.EMPTY_ISSUE_VALUE_EXPDATE);
+					throw new LicenseIssuerException(LicenseIssuerError.EMPTY_ISSUE_VALUE_EXPDATE);
 				}
 				if (ipAddress != null && !ipAddress.isBlank()) {
-					throw new LicenseIssuerException(
-							LicenseIssuerError.NOT_ALLOWED_IP_FOR_DEV_TEMP);
+					throw new LicenseIssuerException(LicenseIssuerError.NOT_ALLOWED_IP_FOR_DEV_TEMP);
 				}
 				break;
 		}

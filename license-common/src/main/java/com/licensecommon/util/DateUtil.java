@@ -1,4 +1,4 @@
-package com.licenseissuer.util;
+package com.licensecommon.util;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
