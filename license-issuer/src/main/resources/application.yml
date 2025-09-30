@@ -5,7 +5,10 @@ server:
 
 ### Spring 관리
 spring:
-  config.name: issuer
+  config:
+    name: issuer
+    import: application-common.yml
+
   datasource:
 ### h2 DB(default)
     driver-class-name: org.h2.Driver
@@ -30,22 +33,6 @@ spring:
     hibernate.ddl-auto: update
     show-sql: true
 
-### Spring 문서 관리
-common:
-  api-doc:
-    title: "License Agent API"
-    description: "라이센스 에이전트 API"
-    version: "1.0"
-    email: "demo@exmple.com"
-    url: "https://www.example.com"
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    path: /api
-    enabled: true
-  # 일반화된 응답 사용 여부 결정(Handler 충돌방지)
-  override-with-generic-response: false
 
 license:
   licenseName: "demo"
