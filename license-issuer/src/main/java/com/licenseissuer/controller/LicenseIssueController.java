@@ -30,18 +30,13 @@ public class LicenseIssueController {
 	/**
 	 * 라이센스 발급 및 다운로드
 	 *
-	 * @param httpRequest
 	 * @param issueRequest
 	 * @return
 	 */
 	@PostMapping("download")
-	public ResponseEntity<Resource> getLicense(HttpServletRequest httpRequest,
-											   @RequestBody LicenseIssueRequest issueRequest) {
+	public ResponseEntity<Resource> getLicense(@RequestBody LicenseIssueRequest issueRequest) {
 		// 01. issueRequest 유효성 검증
 		issueRequest.validate();
-
-		// 02. IP 추출 및 요청 정보 바인딩
-		issueRequest.setIssuerIp(httpRequest.getRemoteAddr());
 
 		// 03. 라이센스 생성 및 발급
 		ResponseEntity<Resource> resource = issueService.getLicense(issueRequest);

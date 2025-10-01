@@ -38,6 +38,13 @@ public class LicenseIssueRequest {
 		if (issuer == null || issuer.isBlank()) {
 			throw new LicenseIssuerException(LicenseIssuerError.EMPTY_ISSUE_VALUE_ISSUER);
 		}
+		if (issuerIp == null || issuerIp.isBlank()) {
+			throw new LicenseIssuerException(LicenseIssuerError.EMPTY_ISSUE_VALUE_ISSUER_IP);
+		} else {
+			if (!IPCheckUtil.isIP(issuerIp)){
+				throw new LicenseIssuerException(LicenseIssuerError.INVALID_ISSUE_VALUE_ISSUER_IP_FORMAT);
+			}
+		}
 
 		LicenseType type = LicenseType.fromValue(operation);
 		switch (type) {
