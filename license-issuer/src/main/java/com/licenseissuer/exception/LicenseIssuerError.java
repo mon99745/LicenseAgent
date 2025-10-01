@@ -35,6 +35,7 @@ public enum LicenseIssuerError
 	NOT_ALLOWED_IP_FOR_DEV_TEMP(LicenseIssuerError.CODE_PREFIX + "01-14", "Development or temporary license must not contain an IP address.", HttpStatus.BAD_REQUEST),
 
 	EMPTY_READ_VALUE_LICENSEID(LicenseIssuerError.CODE_PREFIX + "01-15", "Production license requires an IP address.", HttpStatus.BAD_REQUEST),
+	INVALID_ISSUE_VALUE_IPADDRESS_FORMAT(LicenseIssuerError.CODE_PREFIX + "01-16", "Invalid IP address format.", HttpStatus.BAD_REQUEST),
 
 
 

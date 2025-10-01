@@ -1,5 +1,6 @@
 package com.licenseissuer.model.dto.request;
 
+import com.licensecommon.util.IPCheckUtil;
 import com.licenseissuer.exception.LicenseIssuerError;
 import com.licenseissuer.exception.LicenseIssuerException;
 import com.licensecommon.enums.LicenseType;
@@ -42,11 +43,15 @@ public class LicenseIssueRequest {
 		switch (type) {
 			case PRODLICENSE:
 				// PROD → ipAddress 필수, expDate 들어오면 예외
-				if (ipAddress == null || ipAddress.isBlank()) {
-					throw new LicenseIssuerException(LicenseIssuerError.EMPTY_ISSUE_VALUE_IPADDRESS);
-				}
 				if (expDate != null && !expDate.isBlank()) {
 					throw new LicenseIssuerException(LicenseIssuerError.NOT_ALLOWED_EXPDATE_FOR_PROD);
+				}
+				if (ipAddress == null || ipAddress.isBlank()) {
+					throw new LicenseIssuerException(LicenseIssuerError.EMPTY_ISSUE_VALUE_IPADDRESS);
+				} else {
+					if (!IPCheckUtil.isIP(ipAddress)){
+						throw new LicenseIssuerException(LicenseIssuerError.INVALID_ISSUE_VALUE_IPADDRESS_FORMAT);
+					}
 				}
 				break;
 
