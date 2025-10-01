@@ -14,6 +14,7 @@ public enum CommonError
 		implements Error {
 	INVALID_OPERATION_TYPE(CommonError.CODE_PREFIX + "01-10", "Unsupported license type", HttpStatus.BAD_REQUEST),
 	INVALID_OPERATION_KEY(CommonError.CODE_PREFIX + "01-11", "Unsupported license key", HttpStatus.BAD_REQUEST),
+	INVALID_EXPIRE_DATE_FORMAT(CommonError.CODE_PREFIX + "01-12", "Invalid expDate format (format: yyyy-MM-dd)", HttpStatus.BAD_REQUEST),
 
 
 	COM_TEST(CommonError.CODE_PREFIX + "10-00", "테스트 예외가 발생하였습니다.", HttpStatus.BAD_REQUEST),
@@ -53,10 +54,7 @@ public enum CommonError
 	COM_HTTP_CLIENT_ERROR(CommonError.CODE_PREFIX + "60-06", "HTTP 요청 중 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 	COM_READ_TEMPLETE_ERROR(CommonError.CODE_PREFIX + "60-07", "템플릿 파일을 읽을수 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 	COM_JSON_ERROR(CommonError.CODE_PREFIX + "60-08", "JSON 처리 중 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
-	COM_SECURITY_ERROR(CommonError.CODE_PREFIX + "60-09", "보안 위반 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR)
-
-	;
-
+	COM_SECURITY_ERROR(CommonError.CODE_PREFIX + "60-09", "보안 위반 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
 
 
 	/**

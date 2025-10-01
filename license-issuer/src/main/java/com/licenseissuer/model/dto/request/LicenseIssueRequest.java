@@ -1,5 +1,6 @@
 package com.licenseissuer.model.dto.request;
 
+import com.licensecommon.util.DateUtil;
 import com.licensecommon.util.IPCheckUtil;
 import com.licenseissuer.exception.LicenseIssuerError;
 import com.licenseissuer.exception.LicenseIssuerException;
@@ -7,9 +8,7 @@ import com.licensecommon.enums.LicenseType;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.licensecommon.enums.LicenseType.DEVLICENSE;
-import static com.licensecommon.enums.LicenseType.PRODLICENSE;
-import static com.licensecommon.enums.LicenseType.TEMPLICENSE;
+import java.time.LocalDate;
 
 /**
  * 라이센스 발급 요청 정보
@@ -63,12 +62,18 @@ public class LicenseIssueRequest {
 				break;
 
 			case DEVLICENSE, TEMPLICENSE:
+				if (ipAddress != null && !ipAddress.isBlank()) {
+					throw new LicenseIssuerException(LicenseIssuerError.NOT_ALLOWED_IP_FOR_DEV_TEMP);
+				}
 				// DEV, TEMP → expDate 필수, ipAddress 들어오면 예외
 				if (expDate == null || expDate.isBlank()) {
 					throw new LicenseIssuerException(LicenseIssuerError.EMPTY_ISSUE_VALUE_EXPDATE);
-				}
-				if (ipAddress != null && !ipAddress.isBlank()) {
-					throw new LicenseIssuerException(LicenseIssuerError.NOT_ALLOWED_IP_FOR_DEV_TEMP);
+				} else {
+					LocalDate parsedDate =DateUtil.isValidDateFormat(expDate);
+					// 현재 날짜와 비교 (오늘보다 과거라면 유효하지 않음)
+					if (parsedDate.isBefore(LocalDate.now())) {
+						throw new LicenseIssuerException(LicenseIssuerError.EXPIRED_DATE_EXPDATE);
+					}
 				}
 				break;
 		}

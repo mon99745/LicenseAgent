@@ -38,13 +38,10 @@ public enum LicenseIssuerError
 	INVALID_ISSUE_VALUE_IPADDRESS_FORMAT(LicenseIssuerError.CODE_PREFIX + "01-16", "Invalid IP address format.", HttpStatus.BAD_REQUEST),
 	EMPTY_ISSUE_VALUE_ISSUER_IP(LicenseIssuerError.CODE_PREFIX + "01-17", "Issuer IP is required", HttpStatus.BAD_REQUEST),
 	INVALID_ISSUE_VALUE_ISSUER_IP_FORMAT(LicenseIssuerError.CODE_PREFIX + "01-17", "Invalid issuer IP format.", HttpStatus.BAD_REQUEST),
-
+	EXPIRED_DATE_EXPDATE(LicenseIssuerError.CODE_PREFIX + "01-18", "expDate is earlier than the current date", HttpStatus.BAD_REQUEST),
 
 
 	LICENSE_NOT_FOUND(LicenseIssuerError.CODE_PREFIX + "01-99", "License not found", HttpStatus.BAD_REQUEST),
-
-
-
 
 
 	FAIL_CREATE_DIRECTORY(LicenseIssuerError.CODE_PREFIX + "99-03", "Failed to create directory", HttpStatus.INTERNAL_SERVER_ERROR),
