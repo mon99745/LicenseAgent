@@ -6,6 +6,10 @@ import com.licensecommon.enums.LicenseType;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.licensecommon.enums.LicenseType.DEVLICENSE;
+import static com.licensecommon.enums.LicenseType.PRODLICENSE;
+import static com.licensecommon.enums.LicenseType.TEMPLICENSE;
+
 /**
  * 라이센스 발급 요청 정보
  */
@@ -34,10 +38,8 @@ public class LicenseIssueRequest {
 			throw new LicenseIssuerException(LicenseIssuerError.EMPTY_ISSUE_VALUE_ISSUER);
 		}
 
-		final LicenseType licenseType;
-		licenseType = LicenseType.fromValue(operation);
-
-		switch (licenseType) {
+		LicenseType type = LicenseType.fromValue(operation);
+		switch (type) {
 			case PRODLICENSE:
 				// PROD → ipAddress 필수, expDate 들어오면 예외
 				if (ipAddress == null || ipAddress.isBlank()) {

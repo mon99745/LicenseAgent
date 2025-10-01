@@ -12,6 +12,10 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum CommonError
 		implements Error {
+	INVALID_OPERATION_TYPE(CommonError.CODE_PREFIX + "01-10", "Unsupported license type", HttpStatus.BAD_REQUEST),
+	INVALID_OPERATION_KEY(CommonError.CODE_PREFIX + "01-11", "Unsupported license key", HttpStatus.BAD_REQUEST),
+
+
 	COM_TEST(CommonError.CODE_PREFIX + "10-00", "테스트 예외가 발생하였습니다.", HttpStatus.BAD_REQUEST),
 	COM_EMPTY_INPUT_DATA(CommonError.CODE_PREFIX + "10-01", "데이터가 비어 있습니다.", HttpStatus.BAD_REQUEST),
 	COM_INVALID_ARGUMENT(CommonError.CODE_PREFIX + "10-02", "요청 값이 잘못 되었습니다.", HttpStatus.BAD_REQUEST),
@@ -49,7 +53,11 @@ public enum CommonError
 	COM_HTTP_CLIENT_ERROR(CommonError.CODE_PREFIX + "60-06", "HTTP 요청 중 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 	COM_READ_TEMPLETE_ERROR(CommonError.CODE_PREFIX + "60-07", "템플릿 파일을 읽을수 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 	COM_JSON_ERROR(CommonError.CODE_PREFIX + "60-08", "JSON 처리 중 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
-	COM_SECURITY_ERROR(CommonError.CODE_PREFIX + "60-09", "보안 위반 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+	COM_SECURITY_ERROR(CommonError.CODE_PREFIX + "60-09", "보안 위반 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR)
+
+	;
+
+
 
 	/**
 	 * 공통 에러 코드 접두어

@@ -1,8 +1,12 @@
 package com.licensecommon.enums;
 
+import com.licensecommon.exception.CommonException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import static com.licensecommon.exception.CommonError.INVALID_OPERATION_KEY;
+import static com.licensecommon.exception.CommonError.INVALID_OPERATION_TYPE;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -34,7 +38,7 @@ public enum LicenseType {
 				return type;
 			}
 		}
-		throw new IllegalArgumentException("Unsupported license type:" + value);
+		throw new CommonException(INVALID_OPERATION_TYPE);
 	}
 	public static LicenseType fromKey(String key) {
 		for (LicenseType type : values()) {
@@ -42,6 +46,6 @@ public enum LicenseType {
 				return type;
 			}
 		}
-		throw new IllegalArgumentException("Unsupported license key:" + key);
+		throw new CommonException(INVALID_OPERATION_KEY);
 	}
 }

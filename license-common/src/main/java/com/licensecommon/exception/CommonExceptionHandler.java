@@ -18,7 +18,7 @@ public class CommonExceptionHandler {
 																	  HttpServletRequest request) {
 
 		Map<String, Object> body = Map.of(
-				"code", ex.getError() != null ? ex.getError().toCodeString() : "DEF-UNKNOWN",
+				"code", ex.getError() != null ? ex.getError().getCode() : "DEF-UNKNOWN",
 				"message", ex.getMessage(),
 				"path", request.getRequestURI()
 		);

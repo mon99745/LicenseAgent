@@ -6,5 +6,5 @@ server:
 ### Spring 관리
 spring:
   config:
-    name: validator
+    name: VALIDATOR
     import: application-common.yml
