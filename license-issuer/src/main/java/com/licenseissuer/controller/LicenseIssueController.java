@@ -38,11 +38,8 @@ public class LicenseIssueController {
 		// 01. issueRequest 유효성 검증
 		issueRequest.validate();
 
-		// 03. 라이센스 생성 및 발급
-		ResponseEntity<Resource> resource = issueService.getLicense(issueRequest);
-
-		// 04. 라이센스 반환
-		return resource;
+		// 02. 라이센스 반환
+		return issueService.getLicense(issueRequest);
 	}
 
 	/**
