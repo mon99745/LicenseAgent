@@ -48,8 +48,7 @@ public class LicenseLogService {
 
 		try {
 			// 01. 파일 이름 생성
-			String fileName = issueProperties.getLicensePrefix()
-					+ "." + issueProperties.getLicenseSuffix();
+			String fileName = issueProperties.getLicensePrefix() + issueProperties.getLicenseSuffix();
 
 			// 02. 디렉터리 유무에 따라 생성
 			File destination = new File(issueProperties.getSavePath(), fileName);
@@ -60,7 +59,7 @@ public class LicenseLogService {
 				}
 			} else if (!parentDir.isDirectory()) {
 				throw new LicenseIssuerException(LicenseIssuerError.FAIL_CREATE_DIRECTORY,
-						parentDir.getPath() + "Exists but is not a directory");
+						parentDir.getPath() + " Exists but is not a directory");
 			}
 			// 03. Resource → 파일 복사
 			try (InputStream in = resource.getInputStream()) {
@@ -109,6 +108,7 @@ public class LicenseLogService {
 	public void saveLicenseInfoLog(LicenseInfo license, String processor, String processorIp, String prcsContent) {
 		// 01. 라이센스 이력 정보 저장
 		LicenseInfoLog licenseAfterInfoLog = new LicenseInfoLog(license, processor, processorIp, prcsContent);
+
 		infoLogRepository.save(licenseAfterInfoLog);
 	}
 }
