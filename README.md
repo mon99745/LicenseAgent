@@ -1,13 +1,40 @@
 # LicenseAgent
 
-license-common (공통 모듈)
+## license-common (공통 모듈)
 - 공통 파일 관리
+    - API Document
+    - Common Exception
+    - Common Properties
 
-license-issuer (발급 모듈)
-- 신규 발급, 갱신, 폐기 기능 담당
+## license-issuer (발급 모듈)
+- 라이센스 발급 관리
+    - 신규 발급
+    - 이력 조회
+    - 정보 변경 
 
-license-validator (검증 모듈)
-- 애플리케이션 구동 시 라이선스 유효성 검사
+## license-validator (검증 모듈)
+- 라이센스 검증 관리
+    - 검증
+        - 위변조 검증
+        - 소유자 검증
+        - 할당 IP/만료일자 검증
+
+## license-web (사용자 UI 모듈)
+- 클라이언트 웹 콘솔
+    - 라이센스 발급 (요청 → 발급 모듈)
+    - 라이센스 이력 조회 
+    - 라이센스 상태 변경 (요청 → 발급 모듈)
+
+## license-webadmin (관리 UI 모듈)
+- 어드민 웹 콘솔
+    - 라이센스 발급 (요청 → 발급 모듈)
+    - 라이센스 이력 조회 
+    - 라이센스 상태 변경 (요청 → 발급 모듈)
+    - 라이센스 발급 현황 통계 조회
+
+## validator-guide (라이센스 적용 가이드 모듈)
+- 라이센스 적용 가이드 프로젝트(외부용)
+    - 어플리케이션 구동 시 라이센스 검증 절차 가이드
 
 [//]: # (license-policy &#40;정책 모듈&#41;)
 
@@ -24,9 +51,3 @@ license-validator (검증 모듈)
 [//]: # (- REST API / gRPC 제공)
 
 [//]: # (- 타 서비스에서 발급 및 검증 요청 가능)
-
-license-web (사용자 UI 모듈)
-- 웹 콘솔 → 라이센스 발급/조회/상태변경 기능 제공
-
-license-webadmin (관리 UI 모듈)
-- 웹 콘솔 → 관리자 발급 현황 조회/통계 기능 제공
