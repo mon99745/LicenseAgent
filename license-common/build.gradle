@@ -1,12 +1,19 @@
 plugins {
     id 'java'
-    id 'war'
 }
 
-war {
+bootJar {
     enabled = false
+    archiveClassifier = ''
+}
+
+jar {
+    enabled = true
 }
 
 dependencies {
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    // Transitive Dependency
+    implementation 'org.bitcoinj:bitcoinj-core:0.15.10'
+    implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'org.apache.commons:commons-lang3:3.13.0'
 }
