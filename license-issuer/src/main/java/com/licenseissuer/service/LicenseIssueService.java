@@ -62,14 +62,14 @@ public class LicenseIssueService {
 				resource = generateService.createResource(DevLicenseDto.builder()
 						.type(licType)
 						.projectName(issueRequest.getProjectName())
-						.expDate(issueRequest.getIpAddress())
+						.expDate(issueRequest.getExpDate())
 						.build());
 				break;
 			case TEMPLICENSE:
 				resource = generateService.createResource(TempLicenseDto.builder()
 						.type(licType)
 						.projectName(issueRequest.getProjectName())
-						.expDate(issueRequest.getIpAddress())
+						.expDate(issueRequest.getExpDate())
 						.build());
 				break;
 		}
