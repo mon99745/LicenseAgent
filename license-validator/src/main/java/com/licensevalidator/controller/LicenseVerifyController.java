@@ -1,5 +1,7 @@
 package com.licensevalidator.controller;
 
+import com.licensevalidator.exception.LicenseVerifyError;
+import com.licensevalidator.exception.LicenseVerifyException;
 import com.licensevalidator.model.response.LicenseVerifyResponse;
 import com.licensevalidator.service.LicenseVerifyService;
 import lombok.AllArgsConstructor;
@@ -19,7 +21,7 @@ public class LicenseVerifyController {
 	@PostMapping("verify")
 	public LicenseVerifyResponse verify(@RequestParam("filePath") String filePath) {
 		if (filePath == null || filePath.isBlank()) {
-			throw new IllegalArgumentException("filePath는 필수입니다.");
+			throw new LicenseVerifyException(LicenseVerifyError.EMPTY_FILE_PATH);
 		}
 
 		return verifyService.verify(filePath);

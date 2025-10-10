@@ -1,4 +1,6 @@
-package com.licensevalidator.util;
+package com.licensecommon.util;
+
+import com.licensecommon.exception.CommonException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,6 +10,14 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.licensecommon.exception.CommonError.EMPTY_FILE;
+import static com.licensecommon.exception.CommonError.EMPTY_FILE_INPUT_NULL;
+import static com.licensecommon.exception.CommonError.FAILED_READ_FILE;
+import static com.licensecommon.exception.CommonError.INVALID_FILE_CONTENT;
+import static com.licensecommon.exception.CommonError.INVALID_FILE_FORMAT;
+import static com.licensecommon.exception.CommonError.INVALID_FILE_PATH;
+import static com.licensecommon.exception.CommonError.INVALID_FILE_SIZE;
 
 /**
  * 파일 관련 공통 유틸리티 클래스
@@ -25,39 +35,39 @@ public class FileUtil {
 	 * - 내용 확인: 문자 존재 여부
 	 *
 	 * @param file 검증할 파일
-	 * @throws IllegalArgumentException 검증 실패 시 예외 발생
+	 * @throws CommonException 검증 실패 시 예외 발생
 	 */
 	public static void validateFile(File file) {
 		// 1. null 체크
 		if (file == null) {
-			throw new IllegalArgumentException("파일이 null 입니다.");
+			throw new CommonException(EMPTY_FILE_INPUT_NULL);
 		}
 
 		// 2. 파일 존재 여부
 		if (!file.exists()) {
-			throw new IllegalArgumentException("파일이 존재하지 않습니다: " + file.getAbsolutePath());
+			throw new CommonException(EMPTY_FILE, file.getAbsolutePath());
 		}
 
 		// 3. 파일인지 확인
 		if (!file.isFile()) {
-			throw new IllegalArgumentException("파일이 아닌 경로입니다: " + file.getAbsolutePath());
+			throw new CommonException(INVALID_FILE_PATH, file.getAbsolutePath());
 		}
 
 		// 4. 읽기 권한 확인
 		if (!file.canRead()) {
-			throw new IllegalArgumentException("파일을 읽을 수 없습니다: " + file.getAbsolutePath());
+			throw new CommonException(FAILED_READ_FILE, file.getAbsolutePath());
 		}
 
 		// 5. 크기 제한 (10MB)
 		long maxSize = 10 * 1024 * 1024;
 		if (file.length() > maxSize) {
-			throw new IllegalArgumentException("파일 크기가 10MB를 초과했습니다.");
+			throw new CommonException(INVALID_FILE_SIZE, file.getAbsolutePath());
 		}
 
 		// 6. 확장자 제한
 		String fileName = file.getName().toLowerCase();
 		if (!(fileName.endsWith(".lic"))) {
-			throw new IllegalArgumentException("허용되지 않는 파일 형식입니다: " + fileName);
+			throw new CommonException(INVALID_FILE_FORMAT, fileName);
 		}
 
 		// 7. 파일 내용에 문자가 존재하는지 확인
@@ -74,12 +84,12 @@ public class FileUtil {
 				}
 			}
 		} catch (IOException e) {
-			throw new IllegalArgumentException("파일을 읽는 중 오류가 발생했습니다 (깨졌을 수 있음): " + file.getAbsolutePath(), e);
+			throw new CommonException(FAILED_READ_FILE, file.getAbsolutePath());
 		}
 
 		// 문자가 없으면 예외 발생
 		if (!hasText) {
-			throw new IllegalArgumentException("파일에 문자가 존재하지 않습니다 (빈 파일 또는 공백만 있음).");
+			throw new CommonException(INVALID_FILE_CONTENT);
 		}
 	}
 
@@ -88,7 +98,7 @@ public class FileUtil {
 	 *
 	 * @param file 읽을 파일
 	 * @return 파일 전체 내용
-	 * @throws IllegalArgumentException 파일 읽기 실패 시 발생
+	 * @throws CommonException 파일 읽기 실패 시 발생
 	 */
 	public static String readFileContent(File file) {
 		StringBuilder content = new StringBuilder();
@@ -101,7 +111,7 @@ public class FileUtil {
 				content.append(line).append(System.lineSeparator());
 			}
 		} catch (IOException e) {
-			throw new IllegalArgumentException("파일을 읽는 중 오류가 발생했습니다: " + file.getAbsolutePath(), e);
+			throw new CommonException(FAILED_READ_FILE, file.getAbsolutePath());
 		}
 
 		return content.toString();
@@ -112,7 +122,7 @@ public class FileUtil {
 	 *
 	 * @param file 읽을 파일
 	 * @return 파일 내용 라인 리스트
-	 * @throws IllegalArgumentException 파일 읽기 실패 시 발생
+	 * @throws CommonException 파일 읽기 실패 시 발생
 	 */
 	public static List<String> readFileLines(File file) {
 		List<String> lines = new ArrayList<>();
@@ -125,7 +135,7 @@ public class FileUtil {
 				lines.add(line);
 			}
 		} catch (IOException e) {
-			throw new IllegalArgumentException("파일을 읽는 중 오류가 발생했습니다: " + file.getAbsolutePath(), e);
+			throw new CommonException(FAILED_READ_FILE, file.getAbsolutePath());
 		}
 
 		return lines;

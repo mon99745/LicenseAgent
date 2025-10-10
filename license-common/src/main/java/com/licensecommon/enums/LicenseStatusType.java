@@ -1,5 +1,7 @@
 package com.licensecommon.enums;
 
+import com.licensecommon.exception.CommonError;
+import com.licensecommon.exception.CommonException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +30,6 @@ public enum LicenseStatusType {
 				return type;
 			}
 		}
-		throw new IllegalArgumentException("Invalid license Status type: " + value);
+		throw new CommonException(CommonError.INVALID_FILE_STATUS_TYPE, value);
 	}
 }

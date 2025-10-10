@@ -6,7 +6,7 @@ server:
 ### Spring 관리
 spring:
   config:
-    name: issuer
+    name: ISSUER
     import: application-common.yml
 
   datasource:

@@ -12,6 +12,21 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum CommonError
 		implements Error {
+	INVALID_OPERATION_TYPE(CommonError.CODE_PREFIX + "01-10", "Unsupported license type", HttpStatus.BAD_REQUEST),
+	INVALID_OPERATION_KEY(CommonError.CODE_PREFIX + "01-11", "Unsupported license key", HttpStatus.BAD_REQUEST),
+	INVALID_EXPIRE_DATE_FORMAT(CommonError.CODE_PREFIX + "01-12", "Invalid expDate format (format: yyyy-MM-dd)", HttpStatus.BAD_REQUEST),
+
+	EMPTY_FILE_INPUT_NULL(CommonError.CODE_PREFIX + "01-13", "File is null", HttpStatus.BAD_REQUEST),
+	EMPTY_FILE(CommonError.CODE_PREFIX + "01-14", "File is empty : ", HttpStatus.BAD_REQUEST),
+	INVALID_FILE_PATH(CommonError.CODE_PREFIX + "01-15", "Invalid File-path : ", HttpStatus.BAD_REQUEST),
+	FAILED_READ_FILE(CommonError.CODE_PREFIX + "01-16", "Failed to read file : ", HttpStatus.BAD_REQUEST),
+	INVALID_FILE_SIZE(CommonError.CODE_PREFIX + "01-17", "File size exceeded 10MB.", HttpStatus.BAD_REQUEST),
+	INVALID_FILE_FORMAT(CommonError.CODE_PREFIX + "01-18", "File format not allowed : ", HttpStatus.BAD_REQUEST),
+	INVALID_FILE_CONTENT(CommonError.CODE_PREFIX + "01-19" ,"The file does not contain any characters (only empty files or spaces).", HttpStatus.BAD_REQUEST),
+	INVALID_FILE_STATUS_TYPE(CommonError.CODE_PREFIX + "01-20" ,"Invalid license Status type: ", HttpStatus.BAD_REQUEST),
+	INVALID_FILE_PROCESS_TYPE(CommonError.CODE_PREFIX + "01-21" ,"Invalid license Status type: ", HttpStatus.BAD_REQUEST),
+	FAILED_DATE_FORMAT_CONVERSION(CommonError.CODE_PREFIX + "01-22" ,"Date conversion failed: ", HttpStatus.BAD_REQUEST),
+
 	COM_TEST(CommonError.CODE_PREFIX + "10-00", "테스트 예외가 발생하였습니다.", HttpStatus.BAD_REQUEST),
 	COM_EMPTY_INPUT_DATA(CommonError.CODE_PREFIX + "10-01", "데이터가 비어 있습니다.", HttpStatus.BAD_REQUEST),
 	COM_INVALID_ARGUMENT(CommonError.CODE_PREFIX + "10-02", "요청 값이 잘못 되었습니다.", HttpStatus.BAD_REQUEST),
@@ -50,6 +65,7 @@ public enum CommonError
 	COM_READ_TEMPLETE_ERROR(CommonError.CODE_PREFIX + "60-07", "템플릿 파일을 읽을수 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 	COM_JSON_ERROR(CommonError.CODE_PREFIX + "60-08", "JSON 처리 중 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
 	COM_SECURITY_ERROR(CommonError.CODE_PREFIX + "60-09", "보안 위반 에러가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+
 
 	/**
 	 * 공통 에러 코드 접두어

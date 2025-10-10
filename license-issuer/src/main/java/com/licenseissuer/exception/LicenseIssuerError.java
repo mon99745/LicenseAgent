@@ -34,14 +34,14 @@ public enum LicenseIssuerError
 	EMPTY_ISSUE_VALUE_EXPDATE(LicenseIssuerError.CODE_PREFIX + "01-13", "Development or temporary license requires an expiration date.", HttpStatus.BAD_REQUEST),
 	NOT_ALLOWED_IP_FOR_DEV_TEMP(LicenseIssuerError.CODE_PREFIX + "01-14", "Development or temporary license must not contain an IP address.", HttpStatus.BAD_REQUEST),
 
-	EMPTY_READ_VALUE_LICENSEID(LicenseIssuerError.CODE_PREFIX + "01-15", "Production license requires an IP address.", HttpStatus.BAD_REQUEST),
-
+	EMPTY_READ_VALUE_LICENSEID(LicenseIssuerError.CODE_PREFIX + "01-15", "Production license requires an IP address to be allowed", HttpStatus.BAD_REQUEST),
+	INVALID_ISSUE_VALUE_IPADDRESS_FORMAT(LicenseIssuerError.CODE_PREFIX + "01-16", "Invalid IP address format.", HttpStatus.BAD_REQUEST),
+	EMPTY_ISSUE_VALUE_ISSUER_IP(LicenseIssuerError.CODE_PREFIX + "01-17", "Issuer IP is required", HttpStatus.BAD_REQUEST),
+	INVALID_ISSUE_VALUE_ISSUER_IP_FORMAT(LicenseIssuerError.CODE_PREFIX + "01-17", "Invalid issuer IP format.", HttpStatus.BAD_REQUEST),
+	EXPIRED_DATE_EXPDATE(LicenseIssuerError.CODE_PREFIX + "01-18", "expDate is earlier than the current date", HttpStatus.BAD_REQUEST),
 
 
 	LICENSE_NOT_FOUND(LicenseIssuerError.CODE_PREFIX + "01-99", "License not found", HttpStatus.BAD_REQUEST),
-
-
-
 
 
 	FAIL_CREATE_DIRECTORY(LicenseIssuerError.CODE_PREFIX + "99-03", "Failed to create directory", HttpStatus.INTERNAL_SERVER_ERROR),

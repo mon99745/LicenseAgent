@@ -1,17 +1,24 @@
 package com.licensecommon.util;
 
+import com.licensecommon.exception.CommonError;
+import com.licensecommon.exception.CommonException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
+
+import static com.licensecommon.exception.CommonError.INVALID_EXPIRE_DATE_FORMAT;
 
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class DateUtil {
-	private static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	private static final String DEFAULT_FORMAT = "yyyy-MM-dd";
 
 	public static Date parse(String dateStr) {
 		return parse(dateStr, DEFAULT_FORMAT);
@@ -29,7 +36,8 @@ public class DateUtil {
 		try {
 			return sdf.parse(dateStr);
 		} catch (ParseException e) {
-			throw new IllegalArgumentException("날짜 변환 실패: " + dateStr + ", 포맷: " + format, e);
+			log.error("날짜 변환 실패: " + dateStr + ", 포맷: " + format);
+			throw new CommonException(CommonError.FAILED_DATE_FORMAT_CONVERSION, dateStr);
 		}
 	}
 
@@ -49,5 +57,23 @@ public class DateUtil {
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		return sdf.format(date);
+	}
+
+	/**
+	 * expDate 문자열이 지정된 날짜 포맷에 맞는지 검증
+	 *
+	 * @param expDate 날짜 문자열
+	 * @return 포맷에 맞는 날짜
+	 */
+	public static LocalDate isValidDateFormat(String expDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DEFAULT_FORMAT);
+		LocalDate parsedDate;
+
+		try {
+			parsedDate = LocalDate.parse(expDate, formatter);
+			return parsedDate;
+		} catch (DateTimeParseException e) {
+			throw new CommonException(INVALID_EXPIRE_DATE_FORMAT);
+		}
 	}
 }

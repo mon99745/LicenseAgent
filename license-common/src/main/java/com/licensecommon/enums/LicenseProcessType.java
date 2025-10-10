@@ -1,5 +1,7 @@
 package com.licensecommon.enums;
 
+import com.licensecommon.exception.CommonError;
+import com.licensecommon.exception.CommonException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +27,6 @@ public enum LicenseProcessType {
 				return type;
 			}
 		}
-		throw new IllegalArgumentException("Invalid license Process type: " + value);
+		throw new CommonException(CommonError.INVALID_FILE_PROCESS_TYPE, value);
 	}
 }
