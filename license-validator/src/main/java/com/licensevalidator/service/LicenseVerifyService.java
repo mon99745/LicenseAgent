@@ -6,8 +6,10 @@ import com.jsonwebtoken.core.model.dto.reponse.ExtractClaimResponse;
 import com.jsonwebtoken.core.model.dto.reponse.VerifyTokenResponse;
 import com.jsonwebtoken.core.service.TokenService;
 import com.licensecommon.util.DateUtil;
+import com.licensevalidator.exception.LicenseVerifyError;
+import com.licensevalidator.exception.LicenseVerifyException;
 import com.licensevalidator.model.response.LicenseVerifyResponse;
-import com.licensevalidator.util.FileUtil;
+import com.licensecommon.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,7 +37,6 @@ public class LicenseVerifyService {
 	 */
 	public LicenseVerifyResponse verify(String licPath) {
 		try {
-
 			File lic = new File(licPath);
 
 			// 01. 라이센스 유효성 검사
@@ -58,8 +59,8 @@ public class LicenseVerifyService {
 					.resultMsg("라이센스 검증 성공")
 					.isValid(true)
 					.build();
-		} catch (IllegalArgumentException | IllegalStateException e) {
-			log.error("라이센스 검증 실패: {}", e.getMessage());
+		} catch (LicenseVerifyException e) {
+			log.info("라이센스 검증 실패: {}", e.getMessage());
 			return LicenseVerifyResponse.builder()
 					.resultCode(String.valueOf(HttpStatus.BAD_REQUEST.value()))
 					.resultMsg(e.getMessage())
@@ -87,7 +88,7 @@ public class LicenseVerifyService {
 		log.info("[JWT Verify] Result_Code={}, Result_Msg={}", verifyResultCode, verifyResultMsg);
 
 		if (!String.valueOf(HttpStatus.OK.value()).equals(verifyResultCode)) {
-			throw new IllegalArgumentException("JWT 위변조 검증 실패: " + verifyResultMsg);
+			throw new LicenseVerifyException(LicenseVerifyError.FAILED_LICENSE_FORGERY_VERIFY, verifyResultMsg);
 		}
 	}
 
@@ -104,7 +105,7 @@ public class LicenseVerifyService {
 		log.info("[JWT Extract] Result_Code={}, Result_Msg={}", extractResultCode, extractResultMsg);
 
 		if (!String.valueOf(HttpStatus.OK.value()).equals(extractResultCode)) {
-			throw new IllegalArgumentException("JWT 데이터 추출 실패: " + extractResultMsg);
+			throw new LicenseVerifyException(LicenseVerifyError.FAILED_LICENSE_DATA_EXTRACT, extractResultMsg);
 		}
 
 		Map<String, Object> publicClaimsMap = new HashMap<>();
@@ -135,7 +136,7 @@ public class LicenseVerifyService {
 	public void verifyResource(Map<String, Object> claims) {
 		String operation = (String) Optional.ofNullable(claims.get("type"))
 				.filter(v -> !v.toString().isEmpty())
-				.orElseThrow(() -> new IllegalArgumentException("operation is null"));
+				.orElseThrow(() -> new LicenseVerifyException(LicenseVerifyError.EMPTY_VALID_VALUE_OPERATION));
 
 		// 01. 라이센스 구분 및 검증
 		LicenseType licKey = LicenseType.fromKey(operation);
@@ -143,28 +144,27 @@ public class LicenseVerifyService {
 			case PRODLICENSE:
 				String ipAddress = (String) Optional.ofNullable(claims.get("ipAddress"))
 						.filter(v -> !v.toString().isEmpty())
-						.orElseThrow(() -> new IllegalArgumentException("ipAddress is null"));
+						.orElseThrow(() -> new LicenseVerifyException(LicenseVerifyError.EMPTY_VALID_VALUE_IPADDRESS));
 				try {
 					String localAddress = InetAddress.getLocalHost().getHostAddress();
 					if (!ipAddress.equals(localAddress)) {
-						throw new IllegalArgumentException("라이센스가 유효하지 않습니다.");
+						throw new LicenseVerifyException(LicenseVerifyError.INVALID_LICENSE);
 					}
 				} catch (UnknownHostException e) {
-					throw new IllegalArgumentException("로컬 IP 조회 실패");
+					throw new LicenseVerifyException(LicenseVerifyError.FAILED_LOCAL_IP_LOOKUP);
 				}
 				break;
 			case DEVLICENSE, TEMPLICENSE:
 				Date current = new Date();
 				String expDate = (String) Optional.ofNullable(claims.get("expDate"))
 						.filter(v -> !v.toString().isEmpty())
-						.orElseThrow(() -> new IllegalArgumentException("expDate is null"));
-
+						.orElseThrow(() -> new LicenseVerifyException(LicenseVerifyError.EMPTY_VALID_VALUE_EXPIRE_DATE));
 				if (current.after(DateUtil.parse(expDate))) {
-					throw new IllegalStateException("The license has expired (" + expDate + ")");
+					throw new LicenseVerifyException(LicenseVerifyError.INVALID_LICENSE_EXPIRE_DATE, expDate);
 				}
 				break;
 			default:
-				throw new IllegalArgumentException("지원하지 않는 라이센스 타입: " + operation);
+				throw new LicenseVerifyException(LicenseVerifyError.INVALID_LICENSE_FILE_TYPE, operation);
 		}
 	}
 }

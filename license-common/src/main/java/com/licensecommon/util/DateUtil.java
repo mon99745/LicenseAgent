@@ -1,5 +1,6 @@
 package com.licensecommon.util;
 
+import com.licensecommon.exception.CommonError;
 import com.licensecommon.exception.CommonException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,8 @@ public class DateUtil {
 		try {
 			return sdf.parse(dateStr);
 		} catch (ParseException e) {
-			throw new IllegalArgumentException("날짜 변환 실패: " + dateStr + ", 포맷: " + format, e);
+			log.error("날짜 변환 실패: " + dateStr + ", 포맷: " + format);
+			throw new CommonException(CommonError.FAILED_DATE_FORMAT_CONVERSION, dateStr);
 		}
 	}
 
