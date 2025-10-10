@@ -2,9 +2,16 @@ plugins {
     id 'java'
 }
 
-jar {
+bootJar {
     enabled = true
     archiveClassifier = ''
+}
+
+jar {
+    enabled = true
+    exclude('**/*Properties.class')
+    exclude('**/*Application.class')
+    exclude('**/controller/**')
 }
 
 dependencies {

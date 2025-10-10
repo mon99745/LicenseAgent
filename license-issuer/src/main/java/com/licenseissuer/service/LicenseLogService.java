@@ -58,8 +58,8 @@ public class LicenseLogService {
 					throw new LicenseIssuerException(LicenseIssuerError.FAIL_CREATE_DIRECTORY, parentDir.getPath());
 				}
 			} else if (!parentDir.isDirectory()) {
-				throw new LicenseIssuerException(LicenseIssuerError.FAIL_CREATE_DIRECTORY,
-						parentDir.getPath() + " Exists but is not a directory");
+				log.error("Exists but is not a directory: {}", parentDir.getPath());
+				throw new LicenseIssuerException(LicenseIssuerError.FAIL_CREATE_DIRECTORY, parentDir.getPath());
 			}
 			// 03. Resource → 파일 복사
 			try (InputStream in = resource.getInputStream()) {

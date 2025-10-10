@@ -22,11 +22,14 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
     implementation fileTree(dir: './lib', includes: [
-            "JsonWebToken-1.2.0.jar",
-            "license-validator-0.0.1.jar"
+            "jsonwebtoken-1.2.1-plain.jar",
+            "license-common-0.0.1-plain.jar",
+            "license-validator-0.0.1-plain.jar"
     ])
 
     implementation 'org.bitcoinj:bitcoinj-core:0.15.10'
     implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
 }

@@ -1,3 +1,7 @@
+spring:
+  config:
+    name: COMMON
+
 ### Spring 공통 문서 관리
 common:
   api-doc:
