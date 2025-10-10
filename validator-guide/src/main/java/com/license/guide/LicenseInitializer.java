@@ -6,14 +6,24 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
-import java.io.File;
-
 @Component
 public class LicenseInitializer {
-	private final String LICENSE_PATH = "./lic/demo_prod_20250911_TestProject100.lic";
+	/**
+	 * 라이센스 검증 파일 경로
+	 * - 예시: "./lic/test.lic"
+	 */
+	private final String LICENSE_PATH = "./lic/test.lic";
 
+	/**
+	 * 라이센스 검증 서비스
+	 */
 	private final LicenseVerifyService verifyService;
 
+	/**
+	 * 생성자 주입
+	 *
+	 * @param verifyService 라이센스 검증 서비스
+	 */
 	public LicenseInitializer(LicenseVerifyService verifyService) {
 		this.verifyService = verifyService;
 	}
@@ -23,13 +33,24 @@ public class LicenseInitializer {
 	 */
 	@PostConstruct
 	public void checkLicense() {
-		File licenseFile = new File(LICENSE_PATH);
-		LicenseVerifyResponse response = verifyService.verify(licenseFile);
+		/**
+		 * 라이센스 검증 응답메시지
+		 * - getResultCode(): 결과코드
+		 * - getResultMsg(): 결과메시지
+		 * - isValid(): 라이센스 유효여부
+		 */
+		LicenseVerifyResponse response = verifyService.verify(LICENSE_PATH);
 
 		if (response.isValid()) {
 			System.out.println("라이센스 유효함");
+			/**
+			 * 라이센스 유효 시 애플리케이션 구동
+			 */
 		} else {
 			System.err.println("라이센스 유효하지 않음: " + response.getResultMsg());
+			/**
+			 * 라이센스 유효하지 않음 시 애플리케이션 종료
+			 */
 			System.exit(1);
 		}
 	}
