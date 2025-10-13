@@ -1,40 +1,44 @@
 # LicenseAgent
-
-## license-common (공통 모듈)
-- 공통 파일 관리
-    - API Document
+## Introduction
+### license-common (공통 모듈)
+- 공통 파일 관리(Common File Management)
+    - Common API Document
     - Common Exception
     - Common Properties
+    - Common Utils 
 
-## license-issuer (발급 모듈)
-- 라이센스 발급 관리
+### license-issuer (발급 모듈)
+- 라이센스 발급 관리(License Issue Management)
     - 신규 발급
     - 이력 조회
     - 정보 변경 
 
-## license-validator (검증 모듈)
-- 라이센스 검증 관리
+### license-validator (검증 모듈)
+- 라이센스 검증 관리(License Verification Management)
     - 검증
         - 위변조 검증
         - 소유자 검증
-        - 할당 IP/만료일자 검증
+        - 유효성(할당 IP/만료일자) 검증
 
-## license-web (사용자 UI 모듈)
-- 클라이언트 웹 콘솔
+### license-web (사용자 UI 모듈)
+- 사용자 웹 콘솔(Client Web Console)
     - 라이센스 발급 (요청 → 발급 모듈)
     - 라이센스 이력 조회 
     - 라이센스 상태 변경 (요청 → 발급 모듈)
 
-## license-webadmin (관리 UI 모듈)
-- 어드민 웹 콘솔
+### license-webadmin (관리 UI 모듈)
+- 관리자 웹 콘솔(Admin Web Console)
     - 라이센스 발급 (요청 → 발급 모듈)
     - 라이센스 이력 조회 
     - 라이센스 상태 변경 (요청 → 발급 모듈)
     - 라이센스 발급 현황 통계 조회
 
-## validator-guide (라이센스 적용 가이드 모듈)
-- 라이센스 적용 가이드 프로젝트(외부용)
-    - 어플리케이션 구동 시 라이센스 검증 절차 가이드
+### validator-guide (라이센스 사용 가이드, 샘플 프로젝트)
+- 라이센스 사용 가이드, 샘플 프로젝트(License Guide, Sample Project)
+    - 목적 : 어플리케이션 구동 시 라이센스 사용 가이드 - **제공용**
+        - Import Library(**/lib/*)
+        - Defining Dependencies(build.gradle)
+        - Defining Initialization(*.class)
 
 [//]: # (license-policy &#40;정책 모듈&#41;)
 
@@ -51,3 +55,10 @@
 [//]: # (- REST API / gRPC 제공)
 
 [//]: # (- 타 서비스에서 발급 및 검증 요청 가능)
+
+
+## Reference
+1. https://github.com/mon99745/TokenReference
+2. https://github.com/mon99745/CommonReference
+
+
