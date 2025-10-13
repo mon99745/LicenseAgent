@@ -17,8 +17,12 @@
   1. (신규) [License-common] SpringDoc 적용 (CommonReference 소스 이관) - 완료
   1. (신규) [License-common] 공통 예외 처리 적용 (CommonReference 소스 이관) - 완료
   1. (신규) [License-issuer] 모듈 종속 예외 처리 구현 - 완료
-  1. (신규) [License-issuer] 모듈 종속 예외 처리 적용 - 진행중
-  1. (버그/중) [License-issuer] 라이센스 중복 발급 이슈 - 보류
-  1. (신규) [License] Readme.md/ReleaseNote.md 작성 - 진행중
-  1. 
+  1. (신규) [License-issuer] 모듈 종속 예외 처리 적용 - 완료 
+  1. (버그/중) [License-issuer] 라이센스 중복 발급 이슈 - 완료
+  1. (신규) [License] Readme.md/ReleaseNote.md 신규 작성 - 완료
+  1. (신규) [License-validator] 라아센스 검증 구현 - 완료
+  1. (신규) [License-validator] 모듈 종속 예외 처리 구현 - 완료
+  1. (신규) [License-validator] 모듈 종속 예외 처리 적용 - 완료 
+  1. (신규) [validator-guide] 라아센스 검증 사용 가이드 프로젝트 구현 - 완료
+
     
