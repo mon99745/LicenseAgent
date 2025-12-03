@@ -16,7 +16,8 @@ jar {
 
 dependencies {
     implementation fileTree(dir: '../lib', includes: [
-            "jsonwebtoken-*.jar"
+            "jwt4j.lite-*.jar",
+            "jwt4j.lite-*-*.jar"
     ])
     implementation project(':license-common')
 }

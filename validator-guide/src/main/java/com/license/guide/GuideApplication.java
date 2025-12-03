@@ -1,6 +1,6 @@
 package com.license.guide;
 
-import com.jsonwebtoken.core.config.TokenAutoConfig;
+import io.jwt4j.lite.core.config.TokenAutoConfig;
 import com.licensevalidator.service.LicenseVerifyService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

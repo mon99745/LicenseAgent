@@ -2,9 +2,9 @@ package com.licensevalidator.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.licensecommon.enums.LicenseType;
-import com.jsonwebtoken.core.model.dto.reponse.ExtractClaimResponse;
-import com.jsonwebtoken.core.model.dto.reponse.VerifyTokenResponse;
-import com.jsonwebtoken.core.service.TokenService;
+import io.jwt4j.lite.core.model.dto.reponse.ExtractClaimResponse;
+import io.jwt4j.lite.core.model.dto.reponse.VerifyTokenResponse;
+import io.jwt4j.lite.core.service.TokenService;
 import com.licensecommon.util.DateUtil;
 import com.licensevalidator.exception.LicenseVerifyError;
 import com.licensevalidator.exception.LicenseVerifyException;

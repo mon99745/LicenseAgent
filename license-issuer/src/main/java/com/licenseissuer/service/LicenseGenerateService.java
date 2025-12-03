@@ -1,8 +1,8 @@
 package com.licenseissuer.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jsonwebtoken.core.model.dto.reponse.CreateTokenResponse;
-import com.jsonwebtoken.core.service.TokenService;
+import io.jwt4j.lite.core.model.dto.reponse.CreateTokenResponse;
+import io.jwt4j.lite.core.service.TokenService;
 import com.licenseissuer.config.LicenseIssueProperties;
 import com.licenseissuer.model.dto.DevLicenseDto;
 import com.licenseissuer.model.dto.ProdLicenseDto;
