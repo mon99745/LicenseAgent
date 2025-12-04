@@ -1,17 +1,32 @@
 plugins {
     id 'java'
+    // https://plugins.gradle.org/plugin/com.github.johnrengelman.shadow
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+ext {
+    libName = 'validator'
+    libVersion = version
+}
+
+
+jar {
+    enabled = true
+    archiveBaseName.set(libName)
+    archiveVersion.set(libVersion)
+
+    dependsOn shadowJar
+}
+
+shadowJar {
+    archiveBaseName.set(libName)
+    archiveVersion.set(libVersion)
+    archiveClassifier.set('')
+    mergeServiceFiles()
 }
 
 bootJar {
     enabled = false
-    archiveClassifier = ''
-}
-
-jar {
-    enabled = true
-    exclude('**/*Properties.class')
-    exclude('**/*Application.class')
-    exclude('**/controller/**')
 }
 
 dependencies {
