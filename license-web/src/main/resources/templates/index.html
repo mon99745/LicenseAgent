@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <script th:src="@{/js/index.js}"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Index Page</h1>
+    <center>
+        <h3> 인증 테스트</h3>
+        <h5> [모든 권한 열람 가능한 페이지] </h5>
+        <button onclick="goPage('/index-test-case1')">Test Page 1 </br> 인증된 사용자 권한</button>
+        <button onclick="goPage('/index-test-case2')">Test Page 2 </br> 회원 전용 권한</button>
+        <button onclick="goPage('/index-test-case3')">Test Page 3 </br> 관리자 전용 권한</button>
+    </center>
+</div>
+</body>
+</html>
