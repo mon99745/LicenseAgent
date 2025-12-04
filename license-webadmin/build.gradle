@@ -8,4 +8,12 @@ war {
 }
 
 dependencies {
+    implementation fileTree(dir: '../lib', includes: [
+            "jwt4j.lite-*.jar",
+            "jwt4j.lite-*-*.jar",
+            "validator-*-*.jar"
+    ])
+
+    implementation project(':validator')
+    implementation project(':license-common')
 }

@@ -2,6 +2,7 @@ package com.licensevalidator.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.licensecommon.enums.LicenseType;
+import io.jwt4j.lite.core.exception.TokenException;
 import io.jwt4j.lite.core.model.dto.reponse.ExtractClaimResponse;
 import io.jwt4j.lite.core.model.dto.reponse.VerifyTokenResponse;
 import io.jwt4j.lite.core.service.TokenService;
@@ -66,11 +67,10 @@ public class LicenseVerifyService {
 					.resultMsg(e.getMessage())
 					.isValid(false)
 					.build();
-		} catch (Exception e) {
-			log.error("예상치 못한 오류 발생", e);
+		} catch (TokenException e) {
 			return LicenseVerifyResponse.builder()
-					.resultCode(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
-					.resultMsg("시스템 오류 발생")
+					.resultCode(e.getError().getCode())
+					.resultMsg(e.getMessage())
 					.isValid(false)
 					.build();
 		}

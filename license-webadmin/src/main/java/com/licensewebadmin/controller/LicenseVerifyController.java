@@ -1,4 +1,4 @@
-package com.licensevalidator.controller;
+package com.licensewebadmin.controller;
 
 import com.licensevalidator.exception.LicenseVerifyError;
 import com.licensevalidator.exception.LicenseVerifyException;
@@ -17,7 +17,12 @@ public class LicenseVerifyController {
 	public static final String PATH = "/api/license";
 	protected final LicenseVerifyService verifyService;
 
-
+	/**
+	 * 라이센스 검증
+	 *
+	 * @param filePath
+	 * @return
+	 */
 	@PostMapping("verify")
 	public LicenseVerifyResponse verify(@RequestParam("filePath") String filePath) {
 		if (filePath == null || filePath.isBlank()) {
