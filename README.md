@@ -13,13 +13,6 @@
     - 이력 조회
     - 정보 변경 
 
-### license-validator (검증 모듈)
-- 라이센스 검증 관리(License Verification Management)
-    - 검증
-        - 위변조 검증
-        - 소유자 검증
-        - 유효성(할당 IP/만료일자) 검증
-
 ### license-web (사용자 UI 모듈)
 - 사용자 웹 콘솔(Client Web Console)
     - 라이센스 발급 (요청 → 발급 모듈)
@@ -33,7 +26,14 @@
     - 라이센스 상태 변경 (요청 → 발급 모듈)
     - 라이센스 발급 현황 통계 조회
 
-### validator-guide (라이센스 사용 가이드, 샘플 프로젝트)
+### validator (검증 라이브러리, 라이브러리 제공용)
+- 라이센스 검증 (License Verification Management)
+    - 검증
+        - 위변조 검증
+        - 소유자 검증
+        - 유효성(할당 IP/만료일자) 검증
+          
+### validator-guide (라이센스 사용 가이드, 프로젝트 제공)
 - 라이센스 사용 가이드, 샘플 프로젝트(License Guide, Sample Project)
     - 목적 : 어플리케이션 구동 시 라이센스 사용 가이드 - **제공용**
         - Import Library(**/lib/*)
