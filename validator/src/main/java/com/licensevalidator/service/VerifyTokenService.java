@@ -19,12 +19,13 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class VerifyTokenService {
+	private static final String HttpStatus_OK_CODE = String.valueOf(HttpStatus.OK.value());
 	private final TokenService tokenService;
 
 	public void verify(String token) {
 		VerifyTokenResponse res = tokenService.verifyJwt(token);
 
-		if (!HttpStatus.OK.toString().equals(res.getResultCode())) {
+		if (!HttpStatus_OK_CODE.equals(res.getResultCode())) {
 			throw new LicenseVerifyException(
 					LicenseVerifyError.FAILED_LICENSE_FORGERY_VERIFY,
 					res.getResultMsg()
@@ -35,7 +36,7 @@ public class VerifyTokenService {
 	public Map<String, Object> extractClaims(String token) {
 		ExtractClaimResponse res = tokenService.extractClaimToJwt(token);
 
-		if (!HttpStatus.OK.toString().equals(res.getResultCode())) {
+		if (!HttpStatus_OK_CODE.equals(res.getResultCode())) {
 			throw new LicenseVerifyException(
 					LicenseVerifyError.FAILED_LICENSE_DATA_EXTRACT,
 					res.getResultMsg()
