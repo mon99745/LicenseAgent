@@ -1,6 +1,6 @@
 package com.licenseissuer;
 
-import com.jsonwebtoken.core.config.TokenAutoConfig;
+import io.jwt4j.lite.core.config.TokenAutoConfig;
 import com.licensecommon.config.SpringDocProperties;
 import com.licenseissuer.model.entity.LicenseInfo;
 import org.springframework.boot.SpringApplication;

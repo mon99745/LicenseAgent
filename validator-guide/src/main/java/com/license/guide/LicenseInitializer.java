@@ -12,7 +12,8 @@ public class LicenseInitializer {
 	 * 라이센스 검증 파일 경로
 	 * - 예시: "./lic/test.lic"
 	 */
-	private final String LICENSE_PATH = "./lic/test.lic";
+	private final String LICENSE_PATH = "./lic/test_fail.lic";
+//	private final String LICENSE_PATH = "./lic/test_success.lic";
 
 	/**
 	 * 라이센스 검증 서비스

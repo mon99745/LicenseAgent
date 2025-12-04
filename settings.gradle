@@ -8,6 +8,7 @@ rootProject.name = 'licenseAgent'
 
 include 'license-common'
 include 'license-issuer'
-include 'license-validator'
 include 'license-web'
 include 'license-webadmin'
+
+include 'validator'

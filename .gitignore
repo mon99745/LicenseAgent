@@ -42,3 +42,4 @@ out/
 **/*.lic
 **/*.db
 **/*.pem
+**/sample/*.json

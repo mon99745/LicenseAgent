@@ -1,1 +1,10 @@
-spring.application.name=license-webadmin
+### 서버 관리
+server:
+  ### 내장 WAS 관리
+  port: 9091
+
+### Spring 관리
+spring:
+  config:
+    name: VALIDATOR
+    import: application-common.yml
