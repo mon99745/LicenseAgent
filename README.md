@@ -33,9 +33,9 @@
         - 소유자 검증
         - 유효성(할당 IP/만료일자) 검증
           
-### validator-guide (라이센스 사용 가이드, 프로젝트 제공)
+### validator-guide (라이센스 사용 가이드, 샘플 프로젝트 제공용)
 - 라이센스 사용 가이드, 샘플 프로젝트(License Guide, Sample Project)
-    - 목적 : 어플리케이션 구동 시 라이센스 사용 가이드 - **제공용**
+    - 목적 : 어플리케이션 구동 시 라이센스 사용 가이드
         - Import Library(**/lib/*)
         - Defining Dependencies(build.gradle)
         - Defining Initialization(*.class)
@@ -60,5 +60,6 @@
 ## Reference
 1. https://github.com/mon99745/TokenReference
 2. https://github.com/mon99745/CommonReference
+3. https://github.com/mon99745/SecurityReference
 
 
