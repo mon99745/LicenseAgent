@@ -11,7 +11,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * 라이선스 타입별 비즈니스 검증
@@ -60,9 +59,13 @@ public class VerifyResourceService {
 	}
 
 	private String getString(Map<String, Object> map, String key) {
-		return (String) Optional.ofNullable(map.get(key))
-				.filter(v -> !v.toString().isEmpty())
-				.orElseThrow(() -> new LicenseVerifyException(getError(key)));
+		Object value = map.get(key);
+
+		if (!(value instanceof String s) || s.isBlank()) {
+			throw new LicenseVerifyException(getError(key));
+		}
+
+		return s;
 	}
 
 	private LicenseVerifyError getError(String key) {
