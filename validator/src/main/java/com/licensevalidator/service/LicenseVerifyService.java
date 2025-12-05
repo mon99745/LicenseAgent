@@ -45,17 +45,17 @@ public class LicenseVerifyService {
 
 			return LicenseVerifyResponse.builder()
 					.resultCode(String.valueOf(HttpStatus.OK.value()))
-					.resultMsg("라이센스 검증 성공")
 					.isValid(true)
 					.build();
 		} catch (LicenseVerifyException e) {
-			log.info("라이센스 검증 실패: {}", e.getMessage());
+			log.error("라이센스 검증 실패: {}", e.getMessage());
 			return LicenseVerifyResponse.builder()
-					.resultCode(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+					.resultCode(e.getError().getCode())
 					.resultMsg(e.getMessage())
 					.isValid(false)
 					.build();
 		} catch (TokenException e) {
+			log.error("라이센스 검증 실패: {}", e.getMessage());
 			return LicenseVerifyResponse.builder()
 					.resultCode(e.getError().getCode())
 					.resultMsg(e.getMessage())

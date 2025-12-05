@@ -50,8 +50,7 @@ public class VerifyTokenService {
 		ObjectMapper mapper = new ObjectMapper();
 
 		Map<String, Object> claimsMap = mapper.convertValue(claimsObj, Map.class);
-		Map<String, Object> publicClaimsWrapper =
-				(Map<String, Object>) claimsMap.get("publicClaims");
+		Map<String, Object> publicClaimsWrapper = (Map<String, Object>) claimsMap.get("publicClaims");
 
 		return (Map<String, Object>) publicClaimsWrapper.get("publicClaim");
 	}
